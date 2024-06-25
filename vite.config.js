@@ -4,6 +4,7 @@ import { resolve } from 'path';
 import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts'
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
+import { externalizeDeps } from 'vite-plugin-externalize-deps'
 
 export default defineConfig({
     build: {
@@ -13,5 +14,5 @@ export default defineConfig({
             filename: "stripmap",
         },
     },
-    plugins: [react(), vanillaExtractPlugin(), dts({ rollupTypes: true })]
+    plugins: [react(), vanillaExtractPlugin(), dts({ rollupTypes: true }), externalizeDeps()]
 });
