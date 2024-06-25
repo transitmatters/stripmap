@@ -1,6 +1,6 @@
 {
   "name": "@transitmatters/stripmap",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Code to render strip maps of transit lines",
   "main": "dist/stripmap.umd.js",
   "scripts": {
