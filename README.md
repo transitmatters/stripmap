@@ -1,7 +1,7 @@
-# `stripmaps`
+# `stripmap`
 
 ```
-npm install @transitmatters/stripmaps
+npm install @transitmatters/stripmap
 ```
 
 This library can be used to create strip maps using React and SVG, like this one from the [TransitMatters Data Dashboard](https://dashboard.transitmatters.org/red/slowzones):
