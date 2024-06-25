@@ -1,6 +1,6 @@
 {
   "name": "@transitmatters/stripmap",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Code to render strip maps of transit lines",
   "main": "dist/stripmap.umd.js",
   "types": "dist/index.d.ts",
@@ -19,8 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@vanilla-extract/css": "^1.15.3",
-    "bezier-js": "^6.1.4",
-    "react-responsive": "^10.0.0"
+    "bezier-js": "^6.1.4"
   },
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0"

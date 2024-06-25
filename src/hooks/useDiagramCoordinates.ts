@@ -1,6 +1,5 @@
 import { useCallback, useLayoutEffect, useState } from 'react';
 
-import { useBreakpoint } from './useBreakpoint';
 import { useViewport } from './useViewport';
 import { Point } from '../diagrams';
 
@@ -35,8 +34,7 @@ export const useDiagramCoordinates = (options: Options) => {
     const [svgProps, setSvgProps] = useState<null | SvgProps>(null);
 
     const { viewportWidth, viewportHeight } = useViewport();
-    const isMobile = !useBreakpoint(750);
-    const isHorizontal = direction === 'horizontal-on-desktop' ? !isMobile : direction === 'horizontal';
+    const isHorizontal = direction === 'horizontal';
 
     useLayoutEffect(() => {
         if (svg) {

@@ -42,7 +42,7 @@ type TooltipOptions = {
 
 export interface LineMapProps {
     diagram: Diagram;
-    direction?: 'vertical' | 'horizontal' | 'horizontal-on-desktop';
+    direction?: 'vertical' | 'horizontal';
     strokeOptions?: Partial<StrokeOptions>;
     tooltip?: TooltipOptions;
     getStationLabel?: (options: { stationId: string; stationName: string }) => string;
@@ -85,7 +85,7 @@ const getSegmentLabelBounds = (segmentBounds: Rect, segmentLabel: SegmentLabel, 
 export const LineMap = (props: LineMapProps) => {
     const {
         diagram,
-        direction = 'horizontal-on-desktop' as const,
+        direction = 'horizontal' as const,
         getStationLabel,
         getScaleBasis,
         strokeOptions = {},
