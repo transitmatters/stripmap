@@ -1,6 +1,6 @@
 {
   "name": "@transitmatters/stripmap",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Code to render strip maps of transit lines",
   "main": "dist/stripmap.umd.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,7 @@
     "react-responsive": "^10.0.0"
   },
   "peerDependencies": {
-    "react": "^17.0.0 || ^18.3.0"
+    "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.5.0",
