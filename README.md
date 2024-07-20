@@ -1,4 +1,4 @@
-# `stripmap`
+# stripmap
 
 ```
 npm install @transitmatters/stripmap
