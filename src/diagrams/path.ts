@@ -43,7 +43,8 @@ export class Path {
 
     private seek(target: number): { segment: Bezier; index: number; displacement: number } {
         let displacement = 0;
-        for (let index = 0; index < this.segments.length; index++) {
+        let index = 0;
+        for (index = 0; index < this.segments.length; index++) {
             const segment = this.segments[index];
             const segmentLength = segment.length();
             if (displacement + segmentLength >= target) {
@@ -56,6 +57,9 @@ export class Path {
                 displacement += segmentLength;
             }
         }
+        console.log(displacement);
+        console.log(index);
+        console.log(target);
         throw new Error('Failed to seek');
     }
 

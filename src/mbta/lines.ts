@@ -5,7 +5,7 @@ import type { Turtle } from '../diagrams/types';
 
 import { stations } from './stations';
 
-type DiagrammableLineName = 'Red' | 'Orange' | 'Blue';
+type DiagrammableLineName = 'Red' | 'Green' | 'Orange' | 'Blue';
 
 type CreateDiagramOptions = {
     /** Number of pixels between each station */
@@ -53,6 +53,71 @@ export const createRedLineDiagram = (options: CreateDiagramOptions = {}) => {
     });
 };
 
+// find index of station in list of stations given its MBTA ID (e.g. copley = place-coecl)
+function getStationIndex(stations, stationName: string): number {
+    return stations.findIndex((s) => s.station === stationName);
+}
+
+export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
+    const { pxPerStation = DEFAULT_PX_PER_STATION } = options;
+    const start: Turtle = { x: 0, y: 0, theta: 90 };
+    const stationsE = getStationsForLine('Green', 'E');
+
+    const copleyIndex = getStationIndex(stationsE, 'place-coecl');
+    const govtCenterIndex = getStationIndex(stationsE, 'place-gover');
+    // you could calculate this more easily if you just figured out all the places where
+    // every branch is served... no need to over engineer though
+    const stationsTrunk = stationsE.slice(govtCenterIndex, copleyIndex + 1);
+    const stationsEBeforeTrunk = stationsE.slice(copleyIndex + 1, stationsE.length);
+
+    const haymarketIdx = getStationIndex(stationsE, 'place-haecl');
+
+    const stationsEAfterTrunk = stationsE.slice(0, haymarketIdx + 1);
+
+    const trunkCommand = line(pxPerStation * stationsTrunk.length, ['trunk']);
+
+    const stationsD = getStationsForLine('Green', 'D');
+    const stationsDBeforeTrunk = stationsE.slice(getStationIndex(stationsD, 'place-coecl') + 1, stationsD.length);
+    const stationsDAfterTrunk = stationsD.slice(0, getStationIndex(stationsD, 'place-haecl') + 1);
+
+    const stationsC = getStationsForLine('Green', 'C');
+    const stationsCBeforeTrunk = stationsC.slice(getStationIndex(stationsC, 'place-coecl') + 1, stationsC.length);
+
+    const pathC = execute({
+        start,
+        ranges: ['branch-c-stations'],
+        commands: [trunkCommand, wiggle(15, -40), line(pxPerStation * stationsCBeforeTrunk.length)],
+    });
+
+    const pathD = execute({
+        start,
+        ranges: ['branch-d-stations'],
+        commands: [
+            line(pxPerStation * stationsDAfterTrunk.length),
+            trunkCommand,
+            wiggle(15, -20),
+            line(pxPerStation * stationsDBeforeTrunk.length),
+        ],
+    });
+
+    const pathE = execute({
+        start,
+        ranges: ['branch-e-stations'],
+        commands: [
+            line(pxPerStation * stationsEAfterTrunk.length),
+            trunkCommand,
+            line(pxPerStation * stationsEBeforeTrunk.length),
+        ],
+    });
+
+    return new Diagram([pathE, pathD, pathC], {
+        trunk: stationsTrunk,
+        'branch-e-stations': stationsE,
+        'branch-d-stations': stationsD,
+        'branch-c-stations': stationsC,
+    });
+};
+
 const createStraightLineDiagram = (lineName: DiagrammableLineName, options: CreateDiagramOptions = {}) => {
     const { pxPerStation = DEFAULT_PX_PER_STATION } = options;
     const start: Turtle = { x: 0, y: 0, theta: 90 };
@@ -69,6 +134,8 @@ export const createDefaultDiagramForLine = (lineName: DiagrammableLineName, opti
     switch (lineName) {
         case 'Red':
             return createRedLineDiagram(options);
+        case 'Green':
+            return createGreenLineDiagram(options);
         default:
             return createStraightLineDiagram(lineName, options);
     }
