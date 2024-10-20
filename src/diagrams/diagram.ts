@@ -53,7 +53,6 @@ export class Diagram {
     }
 
     private getPathWithStationIds(stationIds: string[]) {
-        console.log(stationIds);
         const rangeNames = stationIds.map((stationId) => this.rangeNamesByStationId[stationId]);
         for (const path of this.paths) {
             if (rangeNames.every((rangeName) => path.hasRange(rangeName))) {
@@ -103,7 +102,6 @@ export class Diagram {
     }
 
     getStationPosition(stationId: string) {
-        console.log(`calculating from ${stationId}`);
         const pathWithStationId = this.getPathWithStationIds([stationId]);
         const { [stationId]: displacement } = this.stationDisplacementMap.get(pathWithStationId)!;
         return pathWithStationId.getPointFromDisplacement(displacement);

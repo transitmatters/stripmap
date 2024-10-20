@@ -71,42 +71,44 @@ export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
     // you could calculate this more easily if you just figured out all the places where
     // every branch is served... no need to over engineer though
     const stationsTrunk = stationsE.slice(govtCenterIndex, copleyIndex + 1);
-    const stationsEBeforeTrunk = stationsE.slice(copleyIndex + 1, stationsE.length);
+    const stationsEBeforeTrunk = stationsE.slice(0, copleyIndex + 1);
 
     const haymarketIdx = getStationIndex(stationsE, 'place-haecl');
 
-    const stationsEAfterTrunk = stationsE.slice(0, haymarketIdx + 1);
+    const stationsEAfterTrunk = stationsE.slice(haymarketIdx + 1);
 
     const trunkCommand = line(pxPerStation * stationsTrunk.length, ['trunk']);
 
     const stationsD = getStationsForLine('Green', 'D').reverse();
-    const stationsDBeforeTrunk = stationsE.slice(getStationIndex(stationsD, 'place-coecl') + 1, stationsD.length);
-    const stationsDAfterTrunk = stationsD.slice(0, getStationIndex(stationsD, 'place-haecl') + 1);
+    const stationsDBeforeTrunk = stationsD.slice(0, getStationIndex(stationsD, 'place-coecl') + 1);
+    console.log(stationsDBeforeTrunk);
+    const stationsDAfterTrunk = stationsD.slice(getStationIndex(stationsD, 'place-haecl') + 1);
+    console.log(stationsDAfterTrunk);
 
     const stationsC = getStationsForLine('Green', 'C').reverse();
-    const stationsCBeforeTrunk = stationsC.slice(getStationIndex(stationsC, 'place-coecl') + 1, stationsC.length);
+    const stationsCBeforeTrunk = stationsC.slice(0, getStationIndex(stationsC, 'place-coecl') + 1);
 
     const stationsB = getStationsForLine('Green', 'B').reverse();
-    const stationsBBeforeTrunk = stationsB.slice(getStationIndex(stationsB, 'place-coecl') + 1, stationsB.length);
+    const stationsBBeforeTrunk = stationsB.slice(0, getStationIndex(stationsB, 'place-coecl') + 1);
 
     const pathB = execute({
         start: startB,
         ranges: ['branch-b-stations'],
-        commands: [line(pxPerStation * stationsBBeforeTrunk.length), wiggle(15, 20), trunkCommand],
+        commands: [line(pxPerStation * stationsBBeforeTrunk.length), wiggle(15, -20), trunkCommand],
     });
 
     const pathC = execute({
         start: startC,
         ranges: ['branch-c-stations'],
-        commands: [line(pxPerStation * stationsCBeforeTrunk.length), wiggle(15, -40), trunkCommand],
+        commands: [line(pxPerStation * stationsCBeforeTrunk.length), trunkCommand],
     });
 
     const pathD = execute({
         start: startD,
         ranges: ['branch-d-stations'],
         commands: [
-            wiggle(15, -20),
             line(pxPerStation * stationsDBeforeTrunk.length),
+            wiggle(15, 20),
             trunkCommand,
             line(pxPerStation * stationsDAfterTrunk.length),
         ],
@@ -117,6 +119,7 @@ export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
         ranges: ['branch-e-stations'],
         commands: [
             line(pxPerStation * stationsEBeforeTrunk.length),
+            wiggle(15, 40),
             trunkCommand,
             line(pxPerStation * stationsEAfterTrunk.length),
         ],

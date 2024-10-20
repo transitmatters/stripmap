@@ -57,9 +57,6 @@ export class Path {
                 displacement += segmentLength;
             }
         }
-        console.log(displacement);
-        console.log(index);
-        console.log(target);
         throw new Error('Failed to seek');
     }
 
