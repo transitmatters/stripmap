@@ -60,8 +60,11 @@ function getStationIndex(stations, stationName: string): number {
 
 export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
     const { pxPerStation = DEFAULT_PX_PER_STATION } = options;
-    const start: Turtle = { x: 0, y: 0, theta: 90 };
-    const stationsE = getStationsForLine('Green', 'E');
+    const startB: Turtle = { x: 20, y: 0, theta: 90 };
+    const startC: Turtle = { x: 0, y: 0, theta: 90 };
+    const startD: Turtle = { x: -20, y: 0, theta: 90 };
+    const startE: Turtle = { x: -40, y: 0, theta: 90 };
+    const stationsE = getStationsForLine('Green', 'E').reverse();
 
     const copleyIndex = getStationIndex(stationsE, 'place-coecl');
     const govtCenterIndex = getStationIndex(stationsE, 'place-gover');
@@ -76,45 +79,55 @@ export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
 
     const trunkCommand = line(pxPerStation * stationsTrunk.length, ['trunk']);
 
-    const stationsD = getStationsForLine('Green', 'D');
+    const stationsD = getStationsForLine('Green', 'D').reverse();
     const stationsDBeforeTrunk = stationsE.slice(getStationIndex(stationsD, 'place-coecl') + 1, stationsD.length);
     const stationsDAfterTrunk = stationsD.slice(0, getStationIndex(stationsD, 'place-haecl') + 1);
 
-    const stationsC = getStationsForLine('Green', 'C');
+    const stationsC = getStationsForLine('Green', 'C').reverse();
     const stationsCBeforeTrunk = stationsC.slice(getStationIndex(stationsC, 'place-coecl') + 1, stationsC.length);
 
+    const stationsB = getStationsForLine('Green', 'B').reverse();
+    const stationsBBeforeTrunk = stationsB.slice(getStationIndex(stationsB, 'place-coecl') + 1, stationsB.length);
+
+    const pathB = execute({
+        start: startB,
+        ranges: ['branch-b-stations'],
+        commands: [line(pxPerStation * stationsBBeforeTrunk.length), wiggle(15, 20), trunkCommand],
+    });
+
     const pathC = execute({
-        start,
+        start: startC,
         ranges: ['branch-c-stations'],
-        commands: [trunkCommand, wiggle(15, -40), line(pxPerStation * stationsCBeforeTrunk.length)],
+        commands: [line(pxPerStation * stationsCBeforeTrunk.length), wiggle(15, -40), trunkCommand],
     });
 
     const pathD = execute({
-        start,
+        start: startD,
         ranges: ['branch-d-stations'],
         commands: [
-            line(pxPerStation * stationsDAfterTrunk.length),
-            trunkCommand,
             wiggle(15, -20),
             line(pxPerStation * stationsDBeforeTrunk.length),
+            trunkCommand,
+            line(pxPerStation * stationsDAfterTrunk.length),
         ],
     });
 
     const pathE = execute({
-        start,
+        start: startE,
         ranges: ['branch-e-stations'],
         commands: [
-            line(pxPerStation * stationsEAfterTrunk.length),
-            trunkCommand,
             line(pxPerStation * stationsEBeforeTrunk.length),
+            trunkCommand,
+            line(pxPerStation * stationsEAfterTrunk.length),
         ],
     });
 
-    return new Diagram([pathE, pathD, pathC], {
+    return new Diagram([pathE, pathD, pathC, pathB], {
         trunk: stationsTrunk,
-        'branch-e-stations': stationsE,
-        'branch-d-stations': stationsD,
+        'branch-b-stations': stationsB,
         'branch-c-stations': stationsC,
+        'branch-d-stations': stationsD,
+        'branch-e-stations': stationsE,
     });
 };
 

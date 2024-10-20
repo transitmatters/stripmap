@@ -51,15 +51,7 @@ const redLineSegments: SegmentRenderOptions[] = [
     },
 ];
 
-const greenLineSegments: SegmentRenderOptions[] = [
-    {
-        location: {
-            toStationId: 'place-coecl',
-            fromStationId: 'place-gover',
-        },
-        strokes: [{ offset: 1, stroke: 'green', opacity: 0.1 }],
-    },
-];
+const greenLineSegments: SegmentRenderOptions[] = [];
 
 export const Main = () => {
     return (
@@ -67,7 +59,6 @@ export const Main = () => {
             <LineMap
                 direction='horizontal'
                 diagram={greenLine}
-                getStationLabel={(options) => options.stationId}
                 strokeOptions={{ stroke: 'green' }}
                 getSegments={() => greenLineSegments}
             />
