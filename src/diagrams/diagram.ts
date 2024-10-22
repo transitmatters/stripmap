@@ -34,6 +34,7 @@ const getStationDisplacementMap = (paths: Path[], stationsByRangeName: Record<st
             }
         }
     }
+    console.log(map);
     return map;
 };
 

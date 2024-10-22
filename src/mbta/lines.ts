@@ -60,10 +60,10 @@ function getStationIndex(stations, stationName: string): number {
 
 export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
     const { pxPerStation = DEFAULT_PX_PER_STATION } = options;
-    const startB: Turtle = { x: 40, y: 0, theta: 90 };
-    const startC: Turtle = { x: 0, y: -40, theta: 90 };
+    const startB: Turtle = { x: 40, y: -130, theta: 90 };
+    const startC: Turtle = { x: 0, y: -80, theta: 90 };
     const startD: Turtle = { x: -40, y: -80, theta: 90 };
-    const startE: Turtle = { x: -80, y: -20, theta: 90 };
+    const startE: Turtle = { x: -80, y: -40, theta: 90 };
     const stationsE = getStationsForLine('Green', 'E').reverse();
 
     // you could calculate this more easily if you just figured out all the places where
@@ -73,15 +73,13 @@ export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
         getStationIndex(stationsE, 'place-lech') + 1,
     );
     const stationsEBeforeTrunk = stationsE.slice(0, getStationIndex(stationsE, 'place-coecl'));
-    console.log(stationsEBeforeTrunk);
     const stationsEAfterTrunk = stationsE.slice(getStationIndex(stationsE, 'place-lech') + 1);
-    console.log(stationsEAfterTrunk);
 
     const stationsD = getStationsForLine('Green', 'D').reverse();
 
     const kenmoreIdxD = getStationIndex(stationsD, 'place-kencl');
     const stationsTrunkForBCD = stationsD.slice(kenmoreIdxD, getStationIndex(stationsD, 'place-lech') + 1);
-    const trunkCommandBCD = line(stationsTrunkForBCD.length);
+    const trunkCommandBCD = line(stationsTrunkForBCD.length * pxPerStation, ['trunk']);
     const stationsDBeforeTrunk = stationsD.slice(0, getStationIndex(stationsD, 'place-coecl'));
     const stationsDAfterTrunk = stationsD.slice(getStationIndex(stationsD, 'place-lech') + 1);
 
@@ -94,24 +92,30 @@ export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
     const pathB = execute({
         start: startB,
         ranges: ['branch-b-stations'],
-        commands: [line(pxPerStation * stationsBBeforeTrunk.length), wiggle(15, -40), trunkCommandBCD],
+        commands: [
+            line(pxPerStation * stationsBBeforeTrunk.length, ['branch-b-stations']),
+            line(70),
+            wiggle(15, -40),
+            trunkCommandBCD,
+        ],
     });
 
     const pathC = execute({
         start: startC,
         ranges: ['branch-c-stations'],
-        commands: [line(pxPerStation * stationsCBeforeTrunk.length), line(40), trunkCommandBCD],
+        commands: [line(pxPerStation * stationsCBeforeTrunk.length, ['branch-c-stations']), line(30), trunkCommandBCD],
     });
 
     const pathD = execute({
         start: startD,
         ranges: ['branch-d-stations'],
         commands: [
-            line(pxPerStation * stationsDBeforeTrunk.length),
+            line(pxPerStation * stationsDBeforeTrunk.length, ['branch-d-stations']),
+            line(30),
             wiggle(15, 40),
             trunkCommandBCD,
             wiggle(15, 40),
-            line(pxPerStation * stationsDAfterTrunk.length),
+            line(pxPerStation * stationsDAfterTrunk.length, ['branch-d-stations']),
         ],
     });
 
@@ -119,15 +123,17 @@ export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
         start: startE,
         ranges: ['branch-e-stations'],
         commands: [
-            line(pxPerStation * stationsEBeforeTrunk.length),
-            line(20),
+            line(pxPerStation * stationsEBeforeTrunk.length, ['branch-e-stations']),
+            line(40),
             wiggle(30, 80),
-            line(pxPerStation * stationsTrunkForE.length),
-            line(pxPerStation * stationsEAfterTrunk.length),
+            line(pxPerStation * stationsTrunkForE.length, ['trunk']),
+            line(40),
+            line(pxPerStation * stationsEAfterTrunk.length, ['branch-e-stations']),
         ],
     });
 
     return new Diagram([pathB, pathC, pathD, pathE], {
+        trunk: stationsTrunkForBCD,
         'branch-b-stations': stationsB,
         'branch-c-stations': stationsC,
         'branch-d-stations': stationsD,
