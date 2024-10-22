@@ -10,6 +10,7 @@ export default {
 };
 
 const redLine = createDefaultDiagramForLine('Red');
+const greenLine = createDefaultDiagramForLine('Green');
 const redLineSegments: SegmentRenderOptions[] = [
     {
         location: {
@@ -50,18 +51,20 @@ const redLineSegments: SegmentRenderOptions[] = [
     },
 ];
 
+const greenLineSegments: SegmentRenderOptions[] = [];
+
 export const Main = () => {
     return (
         <>
             <LineMap
                 direction='horizontal'
-                diagram={redLine}
-                getStationLabel={(options) => options.stationId}
-                strokeOptions={{ stroke: 'red' }}
-                getSegments={() => redLineSegments}
+                diagram={greenLine}
+                strokeOptions={{ stroke: 'green' }}
+                getSegments={() => greenLineSegments}
             />
+
             <LineMap
-                direction='vertical'
+                direction='horizontal'
                 diagram={redLine}
                 getStationLabel={(options) => options.stationId}
                 strokeOptions={{ stroke: 'red' }}
