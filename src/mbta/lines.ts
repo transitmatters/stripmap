@@ -5,7 +5,7 @@ import type { Turtle } from '../diagrams/types';
 
 import { stations } from './stations';
 
-type DiagrammableLineName = 'Red' | 'Orange' | 'Blue';
+type DiagrammableLineName = 'Red' | 'Green' | 'Orange' | 'Blue';
 
 type CreateDiagramOptions = {
     /** Number of pixels between each station */
@@ -53,6 +53,94 @@ export const createRedLineDiagram = (options: CreateDiagramOptions = {}) => {
     });
 };
 
+// find index of station in list of stations given its MBTA ID (e.g. copley = place-coecl)
+function getStationIndex(stations, stationName: string): number {
+    return stations.findIndex((s) => s.station === stationName);
+}
+
+export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
+    const { pxPerStation = DEFAULT_PX_PER_STATION } = options;
+    const startB: Turtle = { x: 40, y: -130, theta: 90 };
+    const startC: Turtle = { x: 0, y: -80, theta: 90 };
+    const startD: Turtle = { x: -40, y: -80, theta: 90 };
+    const startE: Turtle = { x: -80, y: -40, theta: 90 };
+    const stationsE = getStationsForLine('Green', 'E').reverse();
+
+    // you could calculate this more easily if you just figured out all the places where
+    // every branch is served... no need to over engineer though
+    const stationsTrunkForE = stationsE.slice(
+        getStationIndex(stationsE, 'place-coecl'),
+        getStationIndex(stationsE, 'place-lech') + 1,
+    );
+    const stationsEBeforeTrunk = stationsE.slice(0, getStationIndex(stationsE, 'place-coecl'));
+    const stationsEAfterTrunk = stationsE.slice(getStationIndex(stationsE, 'place-lech') + 1);
+
+    const stationsD = getStationsForLine('Green', 'D').reverse();
+
+    const kenmoreIdxD = getStationIndex(stationsD, 'place-kencl');
+    const stationsTrunkForBCD = stationsD.slice(kenmoreIdxD, getStationIndex(stationsD, 'place-lech') + 1);
+    const trunkCommandBCD = line(stationsTrunkForBCD.length * pxPerStation, ['trunk']);
+    const stationsDBeforeTrunk = stationsD.slice(0, getStationIndex(stationsD, 'place-coecl'));
+    const stationsDAfterTrunk = stationsD.slice(getStationIndex(stationsD, 'place-lech') + 1);
+
+    const stationsC = getStationsForLine('Green', 'C').reverse();
+    const stationsCBeforeTrunk = stationsC.slice(0, getStationIndex(stationsC, 'place-kencl'));
+
+    const stationsB = getStationsForLine('Green', 'B').reverse();
+    const stationsBBeforeTrunk = stationsB.slice(0, getStationIndex(stationsB, 'place-kencl'));
+
+    const pathB = execute({
+        start: startB,
+        ranges: ['branch-b-stations'],
+        commands: [
+            line(pxPerStation * stationsBBeforeTrunk.length, ['branch-b-stations']),
+            line(70),
+            wiggle(15, -40),
+            trunkCommandBCD,
+        ],
+    });
+
+    const pathC = execute({
+        start: startC,
+        ranges: ['branch-c-stations'],
+        commands: [line(pxPerStation * stationsCBeforeTrunk.length, ['branch-c-stations']), line(30), trunkCommandBCD],
+    });
+
+    const pathD = execute({
+        start: startD,
+        ranges: ['branch-d-stations'],
+        commands: [
+            line(pxPerStation * stationsDBeforeTrunk.length, ['branch-d-stations']),
+            line(30),
+            wiggle(15, 40),
+            trunkCommandBCD,
+            wiggle(15, 40),
+            line(pxPerStation * stationsDAfterTrunk.length, ['branch-d-stations']),
+        ],
+    });
+
+    const pathE = execute({
+        start: startE,
+        ranges: ['branch-e-stations'],
+        commands: [
+            line(pxPerStation * stationsEBeforeTrunk.length, ['branch-e-stations']),
+            line(40),
+            wiggle(30, 80),
+            line(pxPerStation * stationsTrunkForE.length, ['trunk']),
+            line(40),
+            line(pxPerStation * stationsEAfterTrunk.length, ['branch-e-stations']),
+        ],
+    });
+
+    return new Diagram([pathB, pathC, pathD, pathE], {
+        trunk: stationsTrunkForBCD,
+        'branch-b-stations': stationsB,
+        'branch-c-stations': stationsC,
+        'branch-d-stations': stationsD,
+        'branch-e-stations': stationsE,
+    });
+};
+
 const createStraightLineDiagram = (lineName: DiagrammableLineName, options: CreateDiagramOptions = {}) => {
     const { pxPerStation = DEFAULT_PX_PER_STATION } = options;
     const start: Turtle = { x: 0, y: 0, theta: 90 };
@@ -69,6 +157,8 @@ export const createDefaultDiagramForLine = (lineName: DiagrammableLineName, opti
     switch (lineName) {
         case 'Red':
             return createRedLineDiagram(options);
+        case 'Green':
+            return createGreenLineDiagram(options);
         default:
             return createStraightLineDiagram(lineName, options);
     }
