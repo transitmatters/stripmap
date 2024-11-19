@@ -68,6 +68,20 @@ export type Station = {
     stop_name: string;
 };
 
+export type StationDetails = {
+    stop_name: string;
+    branches: Array<string> | null;
+    station: string;
+    order: number;
+    stops: Record<string, Array<string>>;
+    accessible: boolean;
+    enclosed_bike_parking?: boolean;
+    pedal_park?: boolean;
+    terminus?: boolean;
+    short?: string;
+    disabled?: boolean;
+};
+
 export type Point = {
     x: number;
     y: number;
