@@ -1,7 +1,7 @@
 import { line, wiggle } from '../diagrams/commands';
 import { Diagram } from '../diagrams/diagram';
 import { execute } from '../diagrams/execute';
-import type { Turtle } from '../diagrams/types';
+import type { StationDetails, Turtle } from '../diagrams/types';
 
 import { stations } from './stations';
 
@@ -14,7 +14,7 @@ type CreateDiagramOptions = {
 
 const DEFAULT_PX_PER_STATION = 10;
 
-const getStationsForLine = (line: DiagrammableLineName, branch?: string) => {
+const getStationsForLine = (line: DiagrammableLineName, branch?: string): StationDetails[] => {
     const stationsForLine = stations[line].stations;
     return stationsForLine
         .filter((station) => !branch || !station.branches || station.branches?.includes(branch))
@@ -54,7 +54,7 @@ export const createRedLineDiagram = (options: CreateDiagramOptions = {}) => {
 };
 
 // find index of station in list of stations given its MBTA ID (e.g. copley = place-coecl)
-function getStationIndex(stations, stationName: string): number {
+function getStationIndex(stations: Array<StationDetails>, stationName: string): number {
     return stations.findIndex((s) => s.station === stationName);
 }
 
