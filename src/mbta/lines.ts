@@ -54,7 +54,7 @@ export const createRedLineDiagram = (options: CreateDiagramOptions = {}) => {
 };
 
 // find index of station in list of stations given its MBTA ID (e.g. copley = place-coecl)
-function getStationIndex(stations: Array<StationDetails>, stationName: string): number {
+function getStationIndex(stations: StationDetails[], stationName: string): number {
     return stations.findIndex((s) => s.station === stationName);
 }
 
