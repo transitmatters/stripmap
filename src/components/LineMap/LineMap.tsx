@@ -187,8 +187,6 @@ export const LineMap = (props: LineMapProps) => {
     const renderStationTransfers = () => {
         const strokeProps = getPropsForStrokeOptions(strokeOptions);
 
-        console.log(transfers);
-
         return transfers.map((transfer) => {
             const fromStation = Object.entries(stationPositions).find(([stationId]) => {
                 return stationsById[stationId].station === transfer.FromStation.station;
@@ -212,6 +210,7 @@ export const LineMap = (props: LineMapProps) => {
                         {...strokeProps}
                         fill='white'
                         strokeWidth='1'
+                        stroke='black'
                     />
                     {/* Bottom connecting line */}
                     <line
@@ -222,25 +221,47 @@ export const LineMap = (props: LineMapProps) => {
                         {...strokeProps}
                         fill='white'
                         strokeWidth='1'
+                        stroke='black'
                     />
 
-                    {/* Make fromStation's point appear incomplete */}
+                    {/* Draw a larger circle indicating the transfer */}
+                    <circle
+                        cx={0}
+                        cy={0}
+                        r={2}
+                        key={`${transfer.FromStation.station}-dot`}
+                        transform={`translate(${fromStation?.[1].x}, ${fromStation?.[1].y})`}
+                        {...strokeProps}
+                        fill='white'
+                        stroke='black'
+                    />
                     <rect
                         x={-0.5}
                         y={-0.5}
                         {...strokeProps}
-                        width='2.5'
+                        width='3'
                         height='1'
                         fill='white'
                         stroke='transparent'
                         transform={`translate(${fromStation?.[1].x}, ${fromStation?.[1].y}) rotate(${isHorizontal ? 90 : 0})`}
                     />
-                    {/* Make toStation's point appear incomplete */}
+
+                    {/* Draw a larger circle indicating the transfer */}
+                    <circle
+                        cx={0}
+                        cy={0}
+                        r={2}
+                        key={`${transfer.ToStation.station}-dot`}
+                        transform={`translate(${toStation?.[1].x}, ${toStation?.[1].y})`}
+                        {...strokeProps}
+                        fill='white'
+                        stroke='black'
+                    />
                     <rect
-                        x={-2}
+                        x={-3}
                         y={-0.5}
                         {...strokeProps}
-                        width='2.5'
+                        width='3'
                         height='1'
                         fill='white'
                         stroke='transparent'
