@@ -182,6 +182,65 @@ export const LineMap = (props: LineMapProps) => {
         });
     };
 
+    const renderStationTransfers = () => {
+        const strokeProps = getPropsForStrokeOptions(strokeOptions);
+        const fromStation = Object.entries(stationPositions).find(([stationId]) => {
+            return stationsById[stationId].station === 'place-asmnl';
+        });
+        const toStation = Object.entries(stationPositions).find(([stationId]) => {
+            return stationsById[stationId].station === '😎this-is-my-new-station';
+        });
+        // .map(([stationId, pos]) => {
+        return (
+            <>
+                {/* Top connecting line */}
+                <line
+                    x1={fromStation?.[1].x + 1}
+                    y1={fromStation?.[1].y + 1}
+                    x2={toStation?.[1].x + 1}
+                    y2={toStation?.[1].y - 1}
+                    {...strokeProps}
+                    fill='white'
+                    strokeWidth='1'
+                />
+                {/* Bottom connecting line */}
+                <line
+                    x1={fromStation?.[1].x - 1}
+                    y1={fromStation?.[1].y + 1}
+                    x2={toStation?.[1].x - 1}
+                    y2={toStation?.[1].y - 1}
+                    {...strokeProps}
+                    fill='white'
+                    strokeWidth='1'
+                />
+
+                {/* Make fromStation's point appear incomplete */}
+                <rect
+                    x={-0.5}
+                    y={-0.5}
+                    {...strokeProps}
+                    width='2.5'
+                    height='1'
+                    fill='white'
+                    stroke='transparent'
+                    transform={`translate(${fromStation?.[1].x}, ${fromStation?.[1].y}) rotate(${isHorizontal ? 90 : 0})`}
+                />
+                {/* Make toStation's point appear incomplete */}
+                <rect
+                    x={-2}
+                    y={-0.5}
+                    {...strokeProps}
+                    width='2.5'
+                    height='1'
+                    fill='white'
+                    stroke='transparent'
+                    transform={`translate(${toStation?.[1].x}, ${toStation?.[1].y}) rotate(${isHorizontal ? 90 : 0})`}
+                />
+            </>
+        );
+        // });
+    };
+
     const renderStationLabels = () => {
         return Object.entries(stationPositions).map(([stationId, pos]) => {
             const stationName = stationsById[stationId].stop_name;
@@ -269,6 +328,7 @@ export const LineMap = (props: LineMapProps) => {
                         {renderComputedLabels()}
                         {renderStationDots()}
                         {renderStationLabels()}
+                        {renderStationTransfers()}
                     </g>
                 </svg>
             </div>

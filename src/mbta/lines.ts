@@ -26,10 +26,18 @@ export const createRedLineDiagram = (options: CreateDiagramOptions = {}) => {
     const start: Turtle = { x: 0, y: 0, theta: 90 };
     const stationsA = getStationsForLine('Red', 'A');
     const stationsB = getStationsForLine('Red', 'B');
+    const stationsM = getStationsForLine('Red', 'M');
+    console.log('stationsM', stationsM);
     const splitIndex = stationsA.findIndex((station) => station.station === 'place-jfk');
     const stationsTrunk = stationsA.slice(0, splitIndex + 1);
     const stationsABranch = stationsA.slice(splitIndex + 1);
     const stationsBBranch = stationsB.slice(splitIndex + 1);
+
+    const mattapanTrunk = line(pxPerStation * (1 + 1), ['trunk']);
+
+    const stationsMBranch = stationsM; //.slice(splitIndexMattapan + 1);
+    console.log('stationsMBranch', stationsMBranch);
+
     const trunk = line(pxPerStation * (1 + stationsTrunk.length), ['trunk']);
     const pathA = execute({
         start,
@@ -46,10 +54,23 @@ export const createRedLineDiagram = (options: CreateDiagramOptions = {}) => {
         ranges: ['branch-b'],
         commands: [trunk, wiggle(15, 20), line(60), line(pxPerStation * stationsBBranch.length, ['branch-b-stations'])],
     });
-    return new Diagram([pathA, pathB], {
+    const pathM = execute({
+        start: { x: -20, y: 185, theta: 90 },
+        ranges: ['branch-m'],
+        commands: [
+            mattapanTrunk,
+            wiggle(15, 0),
+            line(20),
+            // Transfer...
+            line(pxPerStation * stationsMBranch.length, ['branch-m-stations']),
+        ],
+    });
+
+    return new Diagram([pathA, pathB, pathM], {
         trunk: stationsTrunk,
         'branch-a-stations': stationsABranch,
         'branch-b-stations': stationsBBranch,
+        'branch-m-stations': stationsMBranch,
     });
 };
 
