@@ -222,8 +222,6 @@ export const stations = {
                 },
                 transfers: ['place-asmnl'],
                 accessible: true,
-                enclosed_bike_parking: true,
-                pedal_park: true,
                 terminus: true,
             },
             {
@@ -236,8 +234,62 @@ export const stations = {
                     '1': ['70108'],
                 },
                 accessible: true,
-                enclosed_bike_parking: true,
-                pedal_park: true,
+            },
+            {
+                stop_name: 'Milton',
+                branches: ['M'],
+                station: 'place-miltn',
+                order: 303,
+                stops: {
+                    '0': ['70111'],
+                    '1': ['70110'],
+                },
+                accessible: true,
+            },
+            {
+                stop_name: 'Central Avenue',
+                branches: ['M'],
+                station: 'place-cntav',
+                order: 304,
+                stops: {
+                    '0': ['70113'],
+                    '1': ['70112'],
+                },
+                accessible: true,
+            },
+            {
+                stop_name: 'Valley Road',
+                branches: ['M'],
+                station: 'place-valrd',
+                order: 305,
+                stops: {
+                    '0': ['70115'],
+                    '1': ['70114'],
+                },
+                accessible: false,
+            },
+            {
+                stop_name: 'Capen Street',
+                branches: ['M'],
+                station: 'place-cpnst',
+                order: 306,
+                stops: {
+                    '0': ['70117'],
+                    '1': ['70116'],
+                },
+                accessible: true,
+            },
+            {
+                stop_name: 'Mattapan',
+                branches: ['M'],
+                station: 'place-matt',
+                order: 307,
+                stops: {
+                    '0': ['70119'],
+                    '1': ['70118'],
+                },
+                accessible: true,
+                terminus: true,
             },
             {
                 stop_name: 'JFK/UMass (Braintree)',
