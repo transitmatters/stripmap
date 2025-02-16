@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import type { Path, Diagram, SegmentLocation, Station, Point } from '../../diagrams';
+import type { Path, Diagram, SegmentLocation, Station, Point, Transfer } from '../../diagrams';
 import { useDiagramCoordinates, useLineTooltip } from '../../hooks';
 
 import * as styles from './LineMap.css';
@@ -134,6 +134,8 @@ export const LineMap = (props: LineMapProps) => {
         return positions;
     }, [diagram]);
 
+    const transfers: Transfer[] = useMemo(() => diagram.getTransfers(), [diagram]);
+
     const computedSegmentExtras = useMemo(() => {
         const segments = getSegments ? getSegments({ isHorizontal }) : [];
         return segments.map((segment) => {
@@ -184,61 +186,69 @@ export const LineMap = (props: LineMapProps) => {
 
     const renderStationTransfers = () => {
         const strokeProps = getPropsForStrokeOptions(strokeOptions);
-        const fromStation = Object.entries(stationPositions).find(([stationId]) => {
-            return stationsById[stationId].station === 'place-asmnl';
-        });
-        const toStation = Object.entries(stationPositions).find(([stationId]) => {
-            return stationsById[stationId].station === '😎this-is-my-new-station';
-        });
-        // .map(([stationId, pos]) => {
-        return (
-            <>
-                {/* Top connecting line */}
-                <line
-                    x1={fromStation?.[1].x + 1}
-                    y1={fromStation?.[1].y + 1}
-                    x2={toStation?.[1].x + 1}
-                    y2={toStation?.[1].y - 1}
-                    {...strokeProps}
-                    fill='white'
-                    strokeWidth='1'
-                />
-                {/* Bottom connecting line */}
-                <line
-                    x1={fromStation?.[1].x - 1}
-                    y1={fromStation?.[1].y + 1}
-                    x2={toStation?.[1].x - 1}
-                    y2={toStation?.[1].y - 1}
-                    {...strokeProps}
-                    fill='white'
-                    strokeWidth='1'
-                />
 
-                {/* Make fromStation's point appear incomplete */}
-                <rect
-                    x={-0.5}
-                    y={-0.5}
-                    {...strokeProps}
-                    width='2.5'
-                    height='1'
-                    fill='white'
-                    stroke='transparent'
-                    transform={`translate(${fromStation?.[1].x}, ${fromStation?.[1].y}) rotate(${isHorizontal ? 90 : 0})`}
-                />
-                {/* Make toStation's point appear incomplete */}
-                <rect
-                    x={-2}
-                    y={-0.5}
-                    {...strokeProps}
-                    width='2.5'
-                    height='1'
-                    fill='white'
-                    stroke='transparent'
-                    transform={`translate(${toStation?.[1].x}, ${toStation?.[1].y}) rotate(${isHorizontal ? 90 : 0})`}
-                />
-            </>
-        );
-        // });
+        console.log(transfers);
+
+        return transfers.map((transfer) => {
+            const fromStation = Object.entries(stationPositions).find(([stationId]) => {
+                return stationsById[stationId].station === transfer.FromStation.station;
+            });
+            const toStation = Object.entries(stationPositions).find(([stationId]) => {
+                return stationsById[stationId].station === transfer.ToStation.station;
+            });
+
+            if (!fromStation || !toStation) {
+                return null;
+            }
+
+            return (
+                <>
+                    {/* Top connecting line */}
+                    <line
+                        x1={fromStation?.[1].x + 1}
+                        y1={fromStation?.[1].y + 1}
+                        x2={toStation?.[1].x + 1}
+                        y2={toStation?.[1].y - 1}
+                        {...strokeProps}
+                        fill='white'
+                        strokeWidth='1'
+                    />
+                    {/* Bottom connecting line */}
+                    <line
+                        x1={fromStation?.[1].x - 1}
+                        y1={fromStation?.[1].y + 1}
+                        x2={toStation?.[1].x - 1}
+                        y2={toStation?.[1].y - 1}
+                        {...strokeProps}
+                        fill='white'
+                        strokeWidth='1'
+                    />
+
+                    {/* Make fromStation's point appear incomplete */}
+                    <rect
+                        x={-0.5}
+                        y={-0.5}
+                        {...strokeProps}
+                        width='2.5'
+                        height='1'
+                        fill='white'
+                        stroke='transparent'
+                        transform={`translate(${fromStation?.[1].x}, ${fromStation?.[1].y}) rotate(${isHorizontal ? 90 : 0})`}
+                    />
+                    {/* Make toStation's point appear incomplete */}
+                    <rect
+                        x={-2}
+                        y={-0.5}
+                        {...strokeProps}
+                        width='2.5'
+                        height='1'
+                        fill='white'
+                        stroke='transparent'
+                        transform={`translate(${toStation?.[1].x}, ${toStation?.[1].y}) rotate(${isHorizontal ? 90 : 0})`}
+                    />
+                </>
+            );
+        });
     };
 
     const renderStationLabels = () => {

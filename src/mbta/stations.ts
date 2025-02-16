@@ -205,6 +205,7 @@ export const stations = {
                     '0': ['70094'],
                     '1': ['70093'],
                 },
+                transfers: ['place-cedgr'],
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -213,13 +214,13 @@ export const stations = {
             {
                 stop_name: 'Cedar Grove',
                 branches: ['M'],
-                station: '😎this-is-my-new-station',
-                // station: 'place-cedgr',
+                station: 'place-cedgr',
                 order: 301,
                 stops: {
                     '0': ['70107'],
                     '1': ['70106'],
                 },
+                transfers: ['place-asmnl'],
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -228,8 +229,7 @@ export const stations = {
             {
                 stop_name: 'Butler',
                 branches: ['M'],
-                station: '😎this-is-my-other-new-station',
-                // station: 'place-butlr',
+                station: 'place-butlr',
                 order: 302,
                 stops: {
                     '0': ['70109'],

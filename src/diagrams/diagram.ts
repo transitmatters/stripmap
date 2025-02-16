@@ -1,6 +1,6 @@
 import type { Point } from 'bezier-js';
 
-import type { Station } from '../diagrams/types';
+import type { Station, Transfer } from '../diagrams/types';
 
 import type { Path } from './path';
 import type { DiagramProjection, PathProjection, SegmentLocation } from './types';
@@ -37,12 +37,43 @@ const getStationDisplacementMap = (paths: Path[], stationsByRangeName: Record<st
     return map;
 };
 
+const getTransfers = (stations: Station[]): Transfer[] => {
+    const stationsWithTransfers = stations.filter((station) => station.transfers && station.transfers.length > 0);
+
+    const transfers: Transfer[] = [];
+
+    stationsWithTransfers.forEach((station) => {
+        station.transfers?.forEach((transferStation) => {
+            // If the transfer has already been added, skip.
+            if (
+                transfers.find(
+                    (transfer) =>
+                        transfer.ToStation.station === station.station &&
+                        transfer.FromStation.station === transferStation,
+                )
+            ) {
+                return;
+            }
+
+            // New transfer. Add it.
+            const transfer = {
+                FromStation: station,
+                ToStation: stations.find((s) => s.station === transferStation)!,
+            };
+            transfers.push(transfer);
+        });
+    });
+
+    return transfers;
+};
+
 export class Diagram {
     private paths: Path[];
     private stationsByRangeName: Record<string, Station[]>;
     private stations: Station[];
     private readonly rangeNamesByStationId: Record<string, string>;
     private readonly stationDisplacementMap: StationDisplacementMap;
+    private transfers: Transfer[];
 
     constructor(paths: Path[], stationsByRangeName: Record<string, Station[]>) {
         this.paths = paths;
@@ -50,6 +81,7 @@ export class Diagram {
         this.rangeNamesByStationId = indexRangesNamesByStationId(stationsByRangeName);
         this.stationDisplacementMap = getStationDisplacementMap(paths, stationsByRangeName);
         this.stations = [...new Set(Object.values(this.stationsByRangeName).flat())];
+        this.transfers = getTransfers(this.stations);
     }
 
     private getPathWithStationIds(stationIds: string[]) {
@@ -81,6 +113,10 @@ export class Diagram {
 
     getStations() {
         return this.stations;
+    }
+
+    getTransfers() {
+        return this.transfers;
     }
 
     getAdjacentSegmentLocations() {
