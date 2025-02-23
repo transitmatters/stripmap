@@ -66,6 +66,7 @@ export type DiagramProjection = {
 export type Station = {
     station: string;
     stop_name: string;
+    transfers?: string[];
 };
 
 export type StationDetails = {
@@ -80,6 +81,11 @@ export type StationDetails = {
     terminus?: boolean;
     short?: string;
     disabled?: boolean;
+};
+
+export type Transfer = {
+    FromStation: Station;
+    ToStation: Station;
 };
 
 export type Point = {
