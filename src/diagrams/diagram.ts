@@ -56,11 +56,15 @@ const getTransfers = (stations: Station[]): Transfer[] => {
             }
 
             // New transfer. Add it.
-            const transfer = {
+            const toStation = stations.find((s) => s.station === transferStation);
+            if (!toStation) {
+                return;
+            }
+
+            transfers.push({
                 FromStation: station,
-                ToStation: stations.find((s) => s.station === transferStation)!,
-            };
-            transfers.push(transfer);
+                ToStation: toStation,
+            });
         });
     });
 

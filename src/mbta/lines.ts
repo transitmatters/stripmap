@@ -1,7 +1,7 @@
 import { line, wiggle } from '../diagrams/commands';
 import { Diagram } from '../diagrams/diagram';
 import { execute } from '../diagrams/execute';
-import type { StationDetails, Turtle } from '../diagrams/types';
+import type { Station, StationDetails, Turtle } from '../diagrams/types';
 
 import { stations } from './stations';
 
@@ -21,20 +21,16 @@ const getStationsForLine = (line: DiagrammableLineName, branch?: string): Statio
         .sort((a, b) => a.order - b.order);
 };
 
-export const createRedLineDiagram = (options: CreateDiagramOptions = {}) => {
+export const createRedLineDiagram = (options: CreateDiagramOptions = {}, renderMattapanBranch: boolean = false) => {
     const { pxPerStation = DEFAULT_PX_PER_STATION } = options;
     const start: Turtle = { x: 0, y: 0, theta: 90 };
     const stationsA = getStationsForLine('Red', 'A');
     const stationsB = getStationsForLine('Red', 'B');
-    const stationsM = getStationsForLine('Red', 'M');
 
     const splitIndex = stationsA.findIndex((station) => station.station === 'place-jfk');
     const stationsTrunk = stationsA.slice(0, splitIndex + 1);
     const stationsABranch = stationsA.slice(splitIndex + 1);
     const stationsBBranch = stationsB.slice(splitIndex + 1);
-    const stationsMBranch = stationsM;
-
-    const mattapanTrunk = line(pxPerStation, ['trunk']);
 
     const trunk = line(pxPerStation * (1 + stationsTrunk.length), ['trunk']);
     const pathA = execute({
@@ -52,18 +48,31 @@ export const createRedLineDiagram = (options: CreateDiagramOptions = {}) => {
         ranges: ['branch-b'],
         commands: [trunk, wiggle(15, 20), line(60), line(pxPerStation * stationsBBranch.length, ['branch-b-stations'])],
     });
-    const pathM = execute({
-        start: { x: -20, y: 200, theta: 90 },
-        ranges: ['branch-m'],
-        commands: [mattapanTrunk, line(pxPerStation * stationsMBranch.length, ['branch-m-stations'])],
-    });
 
-    return new Diagram([pathA, pathB, pathM], {
+    const paths = [pathA, pathB];
+    const stations: Record<string, Station[]> = {
         trunk: stationsTrunk,
         'branch-a-stations': stationsABranch,
         'branch-b-stations': stationsBBranch,
-        'branch-m-stations': stationsMBranch,
-    });
+    };
+
+    if (renderMattapanBranch) {
+        const stationsM = getStationsForLine('Red', 'M');
+        const stationsMBranch = stationsM;
+
+        const mattapanTrunk = line(pxPerStation, ['trunk']);
+
+        const pathM = execute({
+            start: { x: -20, y: 200, theta: 90 },
+            ranges: ['branch-m'],
+            commands: [mattapanTrunk, line(pxPerStation * stationsMBranch.length, ['branch-m-stations'])],
+        });
+
+        paths.push(pathM);
+        stations['branch-m-stations'] = stationsMBranch;
+    }
+
+    return new Diagram(paths, stations);
 };
 
 // find index of station in list of stations given its MBTA ID (e.g. copley = place-coecl)
@@ -169,7 +178,7 @@ const createStraightLineDiagram = (lineName: DiagrammableLineName, options: Crea
 export const createDefaultDiagramForLine = (lineName: DiagrammableLineName, options: CreateDiagramOptions = {}) => {
     switch (lineName) {
         case 'Red':
-            return createRedLineDiagram(options);
+            return createRedLineDiagram(options, true);
         case 'Green':
             return createGreenLineDiagram(options);
         default:
