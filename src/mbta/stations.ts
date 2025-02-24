@@ -1,20 +1,14 @@
 export const stations = {
     Red: {
         type: 'rapidtransit',
-        direction: {
-            '0': 'northbound',
-            '1': 'southbound',
-        },
+        direction: { '0': 'northbound', '1': 'southbound' },
         stations: [
             {
                 stop_name: 'Alewife',
                 branches: ['A', 'B'],
                 station: 'place-alfcl',
                 order: 1,
-                stops: {
-                    '0': ['70061'],
-                    '1': ['70061'],
-                },
+                stops: { '0': ['70061'], '1': ['70061'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -25,10 +19,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-davis',
                 order: 2,
-                stops: {
-                    '0': ['70064'],
-                    '1': ['70063'],
-                },
+                stops: { '0': ['70064'], '1': ['70063'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -38,10 +29,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-portr',
                 order: 3,
-                stops: {
-                    '0': ['70066'],
-                    '1': ['70065'],
-                },
+                stops: { '0': ['70066'], '1': ['70065'] },
                 accessible: true,
             },
             {
@@ -49,10 +37,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-harsq',
                 order: 4,
-                stops: {
-                    '0': ['70068'],
-                    '1': ['70067'],
-                },
+                stops: { '0': ['70068'], '1': ['70067'] },
                 accessible: true,
             },
             {
@@ -60,10 +45,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-cntsq',
                 order: 5,
-                stops: {
-                    '0': ['70070'],
-                    '1': ['70069'],
-                },
+                stops: { '0': ['70070'], '1': ['70069'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -73,10 +55,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-knncl',
                 order: 6,
-                stops: {
-                    '0': ['70072'],
-                    '1': ['70071'],
-                },
+                stops: { '0': ['70072'], '1': ['70071'] },
                 accessible: true,
             },
             {
@@ -85,10 +64,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-chmnl',
                 order: 7,
-                stops: {
-                    '0': ['70074'],
-                    '1': ['70073'],
-                },
+                stops: { '0': ['70074'], '1': ['70073'] },
                 accessible: true,
             },
             {
@@ -97,10 +73,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-pktrm',
                 order: 8,
-                stops: {
-                    '0': ['70076'],
-                    '1': ['70075'],
-                },
+                stops: { '0': ['70076'], '1': ['70075'] },
                 accessible: true,
             },
             {
@@ -109,10 +82,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-dwnxg',
                 order: 9,
-                stops: {
-                    '0': ['70078'],
-                    '1': ['70077'],
-                },
+                stops: { '0': ['70078'], '1': ['70077'] },
                 accessible: true,
             },
             {
@@ -121,10 +91,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-sstat',
                 order: 10,
-                stops: {
-                    '0': ['70080'],
-                    '1': ['70079'],
-                },
+                stops: { '0': ['70080'], '1': ['70079'] },
                 accessible: true,
             },
             {
@@ -132,10 +99,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-brdwy',
                 order: 11,
-                stops: {
-                    '0': ['70082'],
-                    '1': ['70081'],
-                },
+                stops: { '0': ['70082'], '1': ['70081'] },
                 accessible: true,
             },
             {
@@ -143,10 +107,7 @@ export const stations = {
                 branches: ['A', 'B'],
                 station: 'place-andrw',
                 order: 12,
-                stops: {
-                    '0': ['70084'],
-                    '1': ['70083'],
-                },
+                stops: { '0': ['70084'], '1': ['70083'] },
                 accessible: true,
             },
             {
@@ -155,10 +116,7 @@ export const stations = {
                 branches: ['A'],
                 station: 'place-jfk',
                 order: 101,
-                stops: {
-                    '0': ['70086'],
-                    '1': ['70085'],
-                },
+                stops: { '0': ['70086'], '1': ['70085'] },
                 accessible: true,
             },
             {
@@ -166,10 +124,7 @@ export const stations = {
                 branches: ['A'],
                 station: 'place-shmnl',
                 order: 102,
-                stops: {
-                    '0': ['70088'],
-                    '1': ['70087'],
-                },
+                stops: { '0': ['70088'], '1': ['70087'] },
                 accessible: true,
             },
             {
@@ -178,10 +133,7 @@ export const stations = {
                 branches: ['A'],
                 station: 'place-fldcr',
                 order: 103,
-                stops: {
-                    '0': ['70090'],
-                    '1': ['70089'],
-                },
+                stops: { '0': ['70090'], '1': ['70089'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -190,10 +142,7 @@ export const stations = {
                 branches: ['A'],
                 station: 'place-smmnl',
                 order: 104,
-                stops: {
-                    '0': ['70092'],
-                    '1': ['70091'],
-                },
+                stops: { '0': ['70092'], '1': ['70091'] },
                 accessible: true,
             },
             {
@@ -201,10 +150,7 @@ export const stations = {
                 branches: ['A'],
                 station: 'place-asmnl',
                 order: 105,
-                stops: {
-                    '0': ['70094'],
-                    '1': ['70093'],
-                },
+                stops: { '0': ['70094'], '1': ['70093'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -216,10 +162,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-jfk',
                 order: 201,
-                stops: {
-                    '0': ['70096'],
-                    '1': ['70095'],
-                },
+                stops: { '0': ['70096'], '1': ['70095'] },
                 accessible: true,
             },
             {
@@ -228,10 +171,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-nqncy',
                 order: 202,
-                stops: {
-                    '0': ['70098'],
-                    '1': ['70097'],
-                },
+                stops: { '0': ['70098'], '1': ['70097'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -240,10 +180,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-wlsta',
                 order: 203,
-                stops: {
-                    '0': ['70100'],
-                    '1': ['70099'],
-                },
+                stops: { '0': ['70100'], '1': ['70099'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -254,10 +191,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-qnctr',
                 order: 204,
-                stops: {
-                    '0': ['70102'],
-                    '1': ['70101'],
-                },
+                stops: { '0': ['70102'], '1': ['70101'] },
                 accessible: true,
             },
             {
@@ -266,10 +200,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-qamnl',
                 order: 205,
-                stops: {
-                    '0': ['70104'],
-                    '1': ['70103'],
-                },
+                stops: { '0': ['70104'], '1': ['70103'] },
                 accessible: true,
             },
             {
@@ -277,10 +208,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-brntn',
                 order: 206,
-                stops: {
-                    '0': ['70105'],
-                    '1': ['70105'],
-                },
+                stops: { '0': ['70105'], '1': ['70105'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -290,20 +218,14 @@ export const stations = {
     },
     Orange: {
         type: 'rapidtransit',
-        direction: {
-            '0': 'northbound',
-            '1': 'southbound',
-        },
+        direction: { '0': 'northbound', '1': 'southbound' },
         stations: [
             {
                 stop_name: 'Oak Grove',
                 branches: null,
                 station: 'place-ogmnl',
                 order: 1,
-                stops: {
-                    '0': ['70036'],
-                    '1': ['70036'],
-                },
+                stops: { '0': ['70036'], '1': ['70036'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -315,10 +237,7 @@ export const stations = {
                 branches: null,
                 station: 'place-mlmnl',
                 order: 2,
-                stops: {
-                    '0': ['70035'],
-                    '1': ['70034'],
-                },
+                stops: { '0': ['70035'], '1': ['70034'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -328,10 +247,7 @@ export const stations = {
                 branches: null,
                 station: 'place-welln',
                 order: 3,
-                stops: {
-                    '0': ['70033'],
-                    '1': ['70032'],
-                },
+                stops: { '0': ['70033'], '1': ['70032'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -340,10 +256,7 @@ export const stations = {
                 branches: null,
                 station: 'place-astao',
                 order: 4,
-                stops: {
-                    '0': ['70279'],
-                    '1': ['70278'],
-                },
+                stops: { '0': ['70279'], '1': ['70278'] },
                 accessible: true,
             },
             {
@@ -352,10 +265,7 @@ export const stations = {
                 branches: null,
                 station: 'place-sull',
                 order: 5,
-                stops: {
-                    '0': ['70031'],
-                    '1': ['70030'],
-                },
+                stops: { '0': ['70031'], '1': ['70030'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -365,10 +275,7 @@ export const stations = {
                 branches: null,
                 station: 'place-ccmnl',
                 order: 6,
-                stops: {
-                    '0': ['70029'],
-                    '1': ['70028'],
-                },
+                stops: { '0': ['70029'], '1': ['70028'] },
                 accessible: true,
             },
             {
@@ -377,10 +284,7 @@ export const stations = {
                 branches: null,
                 station: 'place-north',
                 order: 7,
-                stops: {
-                    '0': ['70027'],
-                    '1': ['70026'],
-                },
+                stops: { '0': ['70027'], '1': ['70026'] },
                 accessible: true,
             },
             {
@@ -388,10 +292,7 @@ export const stations = {
                 branches: null,
                 station: 'place-haecl',
                 order: 8,
-                stops: {
-                    '0': ['70025'],
-                    '1': ['70024'],
-                },
+                stops: { '0': ['70025'], '1': ['70024'] },
                 accessible: true,
             },
             {
@@ -400,10 +301,7 @@ export const stations = {
                 branches: null,
                 station: 'place-state',
                 order: 9,
-                stops: {
-                    '0': ['70023'],
-                    '1': ['70022'],
-                },
+                stops: { '0': ['70023'], '1': ['70022'] },
                 accessible: true,
             },
             {
@@ -412,10 +310,7 @@ export const stations = {
                 branches: null,
                 station: 'place-dwnxg',
                 order: 10,
-                stops: {
-                    '0': ['70021'],
-                    '1': ['70020'],
-                },
+                stops: { '0': ['70021'], '1': ['70020'] },
                 accessible: true,
             },
             {
@@ -423,10 +318,7 @@ export const stations = {
                 branches: null,
                 station: 'place-chncl',
                 order: 11,
-                stops: {
-                    '0': ['70019'],
-                    '1': ['70018'],
-                },
+                stops: { '0': ['70019'], '1': ['70018'] },
                 accessible: true,
             },
             {
@@ -435,10 +327,7 @@ export const stations = {
                 branches: null,
                 station: 'place-tumnl',
                 order: 12,
-                stops: {
-                    '0': ['70017'],
-                    '1': ['70016'],
-                },
+                stops: { '0': ['70017'], '1': ['70016'] },
                 accessible: true,
             },
             {
@@ -446,10 +335,7 @@ export const stations = {
                 branches: null,
                 station: 'place-bbsta',
                 order: 13,
-                stops: {
-                    '0': ['70015'],
-                    '1': ['70014'],
-                },
+                stops: { '0': ['70015'], '1': ['70014'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -460,10 +346,7 @@ export const stations = {
                 branches: null,
                 station: 'place-masta',
                 order: 14,
-                stops: {
-                    '0': ['70013'],
-                    '1': ['70012'],
-                },
+                stops: { '0': ['70013'], '1': ['70012'] },
                 accessible: true,
             },
             {
@@ -471,10 +354,7 @@ export const stations = {
                 branches: null,
                 station: 'place-rugg',
                 order: 15,
-                stops: {
-                    '0': ['70011'],
-                    '1': ['70010'],
-                },
+                stops: { '0': ['70011'], '1': ['70010'] },
                 accessible: true,
             },
             {
@@ -483,10 +363,7 @@ export const stations = {
                 branches: null,
                 station: 'place-rcmnl',
                 order: 16,
-                stops: {
-                    '0': ['70009'],
-                    '1': ['70008'],
-                },
+                stops: { '0': ['70009'], '1': ['70008'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -496,10 +373,7 @@ export const stations = {
                 branches: null,
                 station: 'place-jaksn',
                 order: 17,
-                stops: {
-                    '0': ['70007'],
-                    '1': ['70006'],
-                },
+                stops: { '0': ['70007'], '1': ['70006'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -508,10 +382,7 @@ export const stations = {
                 branches: null,
                 station: 'place-sbmnl',
                 order: 18,
-                stops: {
-                    '0': ['70005'],
-                    '1': ['70004'],
-                },
+                stops: { '0': ['70005'], '1': ['70004'] },
                 accessible: true,
             },
             {
@@ -520,10 +391,7 @@ export const stations = {
                 branches: null,
                 station: 'place-grnst',
                 order: 19,
-                stops: {
-                    '0': ['70003'],
-                    '1': ['70002'],
-                },
+                stops: { '0': ['70003'], '1': ['70002'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -532,10 +400,7 @@ export const stations = {
                 branches: null,
                 station: 'place-forhl',
                 order: 20,
-                stops: {
-                    '0': ['70001'],
-                    '1': ['70001'],
-                },
+                stops: { '0': ['70001'], '1': ['70001'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -545,20 +410,14 @@ export const stations = {
     },
     Blue: {
         type: 'rapidtransit',
-        direction: {
-            '0': 'northbound',
-            '1': 'southbound',
-        },
+        direction: { '0': 'northbound', '1': 'southbound' },
         stations: [
             {
                 stop_name: 'Wonderland',
                 branches: null,
                 station: 'place-wondl',
                 order: 1,
-                stops: {
-                    '0': ['70060'],
-                    '1': ['70059'],
-                },
+                stops: { '0': ['70060'], '1': ['70059'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 pedal_park: true,
@@ -570,10 +429,7 @@ export const stations = {
                 branches: null,
                 station: 'place-rbmnl',
                 order: 2,
-                stops: {
-                    '0': ['70058'],
-                    '1': ['70057'],
-                },
+                stops: { '0': ['70058'], '1': ['70057'] },
                 accessible: true,
             },
             {
@@ -581,10 +437,7 @@ export const stations = {
                 branches: null,
                 station: 'place-bmmnl',
                 order: 3,
-                stops: {
-                    '0': ['70056'],
-                    '1': ['70055'],
-                },
+                stops: { '0': ['70056'], '1': ['70055'] },
                 accessible: true,
             },
             {
@@ -593,10 +446,7 @@ export const stations = {
                 branches: null,
                 station: 'place-sdmnl',
                 order: 4,
-                stops: {
-                    '0': ['70054'],
-                    '1': ['70053'],
-                },
+                stops: { '0': ['70054'], '1': ['70053'] },
                 accessible: true,
             },
             {
@@ -605,10 +455,7 @@ export const stations = {
                 branches: null,
                 station: 'place-orhte',
                 order: 5,
-                stops: {
-                    '0': ['70052'],
-                    '1': ['70051'],
-                },
+                stops: { '0': ['70052'], '1': ['70051'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -617,10 +464,7 @@ export const stations = {
                 branches: null,
                 station: 'place-wimnl',
                 order: 6,
-                stops: {
-                    '0': ['70050'],
-                    '1': ['70049'],
-                },
+                stops: { '0': ['70050'], '1': ['70049'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -629,10 +473,7 @@ export const stations = {
                 branches: null,
                 station: 'place-aport',
                 order: 7,
-                stops: {
-                    '0': ['70048'],
-                    '1': ['70047'],
-                },
+                stops: { '0': ['70048'], '1': ['70047'] },
                 accessible: true,
             },
             {
@@ -640,10 +481,7 @@ export const stations = {
                 branches: null,
                 station: 'place-mvbcl',
                 order: 8,
-                stops: {
-                    '0': ['70046'],
-                    '1': ['70045'],
-                },
+                stops: { '0': ['70046'], '1': ['70045'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -652,10 +490,7 @@ export const stations = {
                 branches: null,
                 station: 'place-aqucl',
                 order: 9,
-                stops: {
-                    '0': ['70044'],
-                    '1': ['70043'],
-                },
+                stops: { '0': ['70044'], '1': ['70043'] },
                 accessible: true,
             },
             {
@@ -664,10 +499,7 @@ export const stations = {
                 branches: null,
                 station: 'place-state',
                 order: 10,
-                stops: {
-                    '0': ['70042'],
-                    '1': ['70041'],
-                },
+                stops: { '0': ['70042'], '1': ['70041'] },
                 accessible: true,
             },
             {
@@ -676,10 +508,7 @@ export const stations = {
                 branches: null,
                 station: 'place-gover',
                 order: 11,
-                stops: {
-                    '0': ['70040'],
-                    '1': ['70039'],
-                },
+                stops: { '0': ['70040'], '1': ['70039'] },
                 accessible: true,
             },
             {
@@ -687,10 +516,7 @@ export const stations = {
                 branches: null,
                 station: 'place-bomnl',
                 order: 12,
-                stops: {
-                    '0': ['70038'],
-                    '1': ['70838'],
-                },
+                stops: { '0': ['70038'], '1': ['70838'] },
                 accessible: false,
                 terminus: true,
             },
@@ -698,10 +524,7 @@ export const stations = {
     },
     Green: {
         type: 'rapidtransit',
-        direction: {
-            '0': 'eastbound',
-            '1': 'westbound',
-        },
+        direction: { '0': 'eastbound', '1': 'westbound' },
         stations: [
             {
                 stop_name: 'Medford/Tufts',
@@ -709,10 +532,7 @@ export const stations = {
                 station: 'place-mdftf',
                 disabled: false,
                 order: 1,
-                stops: {
-                    '0': ['70511'],
-                    '1': ['70512'],
-                },
+                stops: { '0': ['70511'], '1': ['70512'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 terminus: true,
@@ -723,10 +543,7 @@ export const stations = {
                 station: 'place-balsq',
                 disabled: false,
                 order: 2,
-                stops: {
-                    '0': ['70509'],
-                    '1': ['70510'],
-                },
+                stops: { '0': ['70509'], '1': ['70510'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -736,10 +553,7 @@ export const stations = {
                 station: 'place-mgngl',
                 disabled: false,
                 order: 3,
-                stops: {
-                    '0': ['70507'],
-                    '1': ['70508'],
-                },
+                stops: { '0': ['70507'], '1': ['70508'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -749,10 +563,7 @@ export const stations = {
                 station: 'place-gilmn',
                 disabled: false,
                 order: 4,
-                stops: {
-                    '0': ['70505'],
-                    '1': ['70506'],
-                },
+                stops: { '0': ['70505'], '1': ['70506'] },
                 accessible: true,
             },
             {
@@ -761,10 +572,7 @@ export const stations = {
                 station: 'place-esomr',
                 disabled: false,
                 order: 5,
-                stops: {
-                    '0': ['70513'],
-                    '1': ['70514'],
-                },
+                stops: { '0': ['70513'], '1': ['70514'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -774,10 +582,7 @@ export const stations = {
                 station: 'place-unsqu',
                 disabled: false,
                 order: 6,
-                stops: {
-                    '0': ['70503'],
-                    '1': ['70504'],
-                },
+                stops: { '0': ['70503'], '1': ['70504'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 terminus: true,
@@ -787,10 +592,7 @@ export const stations = {
                 branches: ['D', 'E'],
                 station: 'place-lech',
                 order: 7,
-                stops: {
-                    '0': ['70501', '70209'],
-                    '1': ['70502', '70210'],
-                },
+                stops: { '0': ['70501', '70209'], '1': ['70502', '70210'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -799,10 +601,7 @@ export const stations = {
                 branches: ['D', 'E'],
                 station: 'place-spmnl',
                 order: 8,
-                stops: {
-                    '0': ['70207'],
-                    '1': ['70208'],
-                },
+                stops: { '0': ['70207'], '1': ['70208'] },
                 accessible: true,
             },
             {
@@ -810,10 +609,7 @@ export const stations = {
                 branches: ['C', 'D', 'E'],
                 station: 'place-north',
                 order: 9,
-                stops: {
-                    '0': ['70205'],
-                    '1': ['70206'],
-                },
+                stops: { '0': ['70205'], '1': ['70206'] },
                 accessible: true,
             },
             {
@@ -821,10 +617,7 @@ export const stations = {
                 branches: ['C', 'D', 'E'],
                 station: 'place-haecl',
                 order: 10,
-                stops: {
-                    '0': ['70203'],
-                    '1': ['70204'],
-                },
+                stops: { '0': ['70203'], '1': ['70204'] },
                 accessible: true,
             },
             {
@@ -832,10 +625,7 @@ export const stations = {
                 branches: ['B', 'C', 'D', 'E'],
                 station: 'place-gover',
                 order: 11,
-                stops: {
-                    '0': ['70201'],
-                    '1': ['70202'],
-                },
+                stops: { '0': ['70201'], '1': ['70202'] },
                 accessible: true,
             },
             {
@@ -843,10 +633,7 @@ export const stations = {
                 branches: ['B', 'C', 'D', 'E'],
                 station: 'place-pktrm',
                 order: 12,
-                stops: {
-                    '0': ['70200'],
-                    '1': ['70196', '70197', '70198', '70199'],
-                },
+                stops: { '0': ['70200'], '1': ['70196', '70197', '70198', '70199'] },
                 accessible: true,
             },
             {
@@ -854,10 +641,7 @@ export const stations = {
                 branches: ['B', 'C', 'D', 'E'],
                 station: 'place-boyls',
                 order: 13,
-                stops: {
-                    '0': ['70158'],
-                    '1': ['70159'],
-                },
+                stops: { '0': ['70158'], '1': ['70159'] },
                 accessible: false,
             },
             {
@@ -865,10 +649,7 @@ export const stations = {
                 branches: ['B', 'C', 'D', 'E'],
                 station: 'place-armnl',
                 order: 14,
-                stops: {
-                    '0': ['70156'],
-                    '1': ['70157'],
-                },
+                stops: { '0': ['70156'], '1': ['70157'] },
                 accessible: true,
             },
             {
@@ -876,10 +657,7 @@ export const stations = {
                 branches: ['B', 'C', 'D', 'E'],
                 station: 'place-coecl',
                 order: 15,
-                stops: {
-                    '0': ['70154'],
-                    '1': ['70155'],
-                },
+                stops: { '0': ['70154'], '1': ['70155'] },
                 accessible: true,
             },
             {
@@ -887,10 +665,7 @@ export const stations = {
                 branches: ['B', 'C', 'D'],
                 station: 'place-hymnl',
                 order: 16,
-                stops: {
-                    '0': ['70152'],
-                    '1': ['70153'],
-                },
+                stops: { '0': ['70152'], '1': ['70153'] },
                 accessible: false,
             },
             {
@@ -898,10 +673,7 @@ export const stations = {
                 branches: ['B', 'C', 'D'],
                 station: 'place-kencl',
                 order: 17,
-                stops: {
-                    '0': ['70150', '71150'],
-                    '1': ['70151', '71151'],
-                },
+                stops: { '0': ['70150', '71150'], '1': ['70151', '71151'] },
                 accessible: true,
             },
             {
@@ -909,10 +681,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-bland',
                 order: 101,
-                stops: {
-                    '0': ['70148'],
-                    '1': ['70149'],
-                },
+                stops: { '0': ['70148'], '1': ['70149'] },
                 accessible: false,
             },
             {
@@ -920,10 +689,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-buest',
                 order: 102,
-                stops: {
-                    '0': ['70146'],
-                    '1': ['70147'],
-                },
+                stops: { '0': ['70146'], '1': ['70147'] },
                 accessible: true,
             },
             {
@@ -931,10 +697,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-bucen',
                 order: 103,
-                stops: {
-                    '0': ['70144'],
-                    '1': ['70145'],
-                },
+                stops: { '0': ['70144'], '1': ['70145'] },
                 accessible: true,
             },
             {
@@ -942,10 +705,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-amory',
                 order: 105,
-                stops: {
-                    '0': ['170140', '70140'],
-                    '1': ['170141', '70141'],
-                },
+                stops: { '0': ['170140', '70140'], '1': ['170141', '70141'] },
                 accessible: true,
             },
             {
@@ -953,10 +713,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-babck',
                 order: 107,
-                stops: {
-                    '0': ['170136', '70136'],
-                    '1': ['170137', '70137'],
-                },
+                stops: { '0': ['170136', '70136'], '1': ['170137', '70137'] },
                 accessible: true,
             },
             {
@@ -964,10 +721,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-brico',
                 order: 108,
-                stops: {
-                    '0': ['70134'],
-                    '1': ['70135'],
-                },
+                stops: { '0': ['70134'], '1': ['70135'] },
                 accessible: false,
             },
             {
@@ -975,10 +729,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-harvd',
                 order: 109,
-                stops: {
-                    '0': ['70130'],
-                    '1': ['70131'],
-                },
+                stops: { '0': ['70130'], '1': ['70131'] },
                 accessible: true,
             },
             {
@@ -986,10 +737,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-grigg',
                 order: 110,
-                stops: {
-                    '0': ['70128'],
-                    '1': ['70129'],
-                },
+                stops: { '0': ['70128'], '1': ['70129'] },
                 accessible: false,
             },
             {
@@ -997,10 +745,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-alsgr',
                 order: 111,
-                stops: {
-                    '0': ['70126'],
-                    '1': ['70127'],
-                },
+                stops: { '0': ['70126'], '1': ['70127'] },
                 accessible: false,
             },
             {
@@ -1008,10 +753,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-wrnst',
                 order: 112,
-                stops: {
-                    '0': ['70124'],
-                    '1': ['70125'],
-                },
+                stops: { '0': ['70124'], '1': ['70125'] },
                 accessible: false,
                 enclosed_bike_parking: true,
             },
@@ -1020,10 +762,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-wascm',
                 order: 113,
-                stops: {
-                    '0': ['70120'],
-                    '1': ['70121'],
-                },
+                stops: { '0': ['70120'], '1': ['70121'] },
                 accessible: true,
             },
             {
@@ -1031,10 +770,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-sthld',
                 order: 114,
-                stops: {
-                    '0': ['70116'],
-                    '1': ['70117'],
-                },
+                stops: { '0': ['70116'], '1': ['70117'] },
                 accessible: false,
             },
             {
@@ -1042,10 +778,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-chswk',
                 order: 115,
-                stops: {
-                    '0': ['70114'],
-                    '1': ['70115'],
-                },
+                stops: { '0': ['70114'], '1': ['70115'] },
                 accessible: false,
             },
             {
@@ -1053,10 +786,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-chill',
                 order: 116,
-                stops: {
-                    '0': ['70112'],
-                    '1': ['70113'],
-                },
+                stops: { '0': ['70112'], '1': ['70113'] },
                 accessible: false,
             },
             {
@@ -1064,10 +794,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-sougr',
                 order: 117,
-                stops: {
-                    '0': ['70110'],
-                    '1': ['70111'],
-                },
+                stops: { '0': ['70110'], '1': ['70111'] },
                 accessible: false,
             },
             {
@@ -1075,10 +802,7 @@ export const stations = {
                 branches: ['B'],
                 station: 'place-lake',
                 order: 118,
-                stops: {
-                    '0': ['70106'],
-                    '1': ['70107'],
-                },
+                stops: { '0': ['70106'], '1': ['70107'] },
                 accessible: true,
                 terminus: true,
             },
@@ -1087,10 +811,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-smary',
                 order: 201,
-                stops: {
-                    '0': ['70212'],
-                    '1': ['70211'],
-                },
+                stops: { '0': ['70212'], '1': ['70211'] },
                 accessible: true,
             },
             {
@@ -1098,10 +819,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-hwsst',
                 order: 202,
-                stops: {
-                    '0': ['70214'],
-                    '1': ['70213'],
-                },
+                stops: { '0': ['70214'], '1': ['70213'] },
                 accessible: false,
             },
             {
@@ -1109,10 +827,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-kntst',
                 order: 203,
-                stops: {
-                    '0': ['70216'],
-                    '1': ['70215'],
-                },
+                stops: { '0': ['70216'], '1': ['70215'] },
                 accessible: false,
             },
             {
@@ -1120,10 +835,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-stpul',
                 order: 204,
-                stops: {
-                    '0': ['70218'],
-                    '1': ['70217'],
-                },
+                stops: { '0': ['70218'], '1': ['70217'] },
                 accessible: false,
             },
             {
@@ -1131,10 +843,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-cool',
                 order: 205,
-                stops: {
-                    '0': ['70220'],
-                    '1': ['70219'],
-                },
+                stops: { '0': ['70220'], '1': ['70219'] },
                 accessible: true,
             },
             {
@@ -1142,10 +851,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-sumav',
                 order: 206,
-                stops: {
-                    '0': ['70224'],
-                    '1': ['70223'],
-                },
+                stops: { '0': ['70224'], '1': ['70223'] },
                 accessible: false,
                 enclosed_bike_parking: true,
             },
@@ -1154,10 +860,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-bndhl',
                 order: 207,
-                stops: {
-                    '0': ['70226'],
-                    '1': ['70225'],
-                },
+                stops: { '0': ['70226'], '1': ['70225'] },
                 accessible: false,
             },
             {
@@ -1165,10 +868,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-fbkst',
                 order: 208,
-                stops: {
-                    '0': ['70228'],
-                    '1': ['70227'],
-                },
+                stops: { '0': ['70228'], '1': ['70227'] },
                 accessible: false,
             },
             {
@@ -1176,10 +876,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-bcnwa',
                 order: 209,
-                stops: {
-                    '0': ['70230'],
-                    '1': ['70229'],
-                },
+                stops: { '0': ['70230'], '1': ['70229'] },
                 accessible: true,
             },
             {
@@ -1187,10 +884,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-tapst',
                 order: 210,
-                stops: {
-                    '0': ['70232'],
-                    '1': ['70231'],
-                },
+                stops: { '0': ['70232'], '1': ['70231'] },
                 accessible: false,
             },
             {
@@ -1198,10 +892,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-denrd',
                 order: 211,
-                stops: {
-                    '0': ['70234'],
-                    '1': ['70233'],
-                },
+                stops: { '0': ['70234'], '1': ['70233'] },
                 accessible: false,
             },
             {
@@ -1209,10 +900,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-engav',
                 order: 212,
-                stops: {
-                    '0': ['70236'],
-                    '1': ['70235'],
-                },
+                stops: { '0': ['70236'], '1': ['70235'] },
                 accessible: false,
             },
             {
@@ -1220,10 +908,7 @@ export const stations = {
                 branches: ['C'],
                 station: 'place-clmnl',
                 order: 213,
-                stops: {
-                    '0': ['70238'],
-                    '1': ['70237'],
-                },
+                stops: { '0': ['70238'], '1': ['70237'] },
                 accessible: true,
                 terminus: true,
             },
@@ -1232,10 +917,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-fenwy',
                 order: 301,
-                stops: {
-                    '0': ['70186'],
-                    '1': ['70187'],
-                },
+                stops: { '0': ['70186'], '1': ['70187'] },
                 accessible: true,
             },
             {
@@ -1243,10 +925,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-longw',
                 order: 302,
-                stops: {
-                    '0': ['70182'],
-                    '1': ['70183'],
-                },
+                stops: { '0': ['70182'], '1': ['70183'] },
                 accessible: true,
             },
             {
@@ -1254,10 +933,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-bvmnl',
                 order: 303,
-                stops: {
-                    '0': ['70180'],
-                    '1': ['70181'],
-                },
+                stops: { '0': ['70180'], '1': ['70181'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -1266,10 +942,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-brkhl',
                 order: 304,
-                stops: {
-                    '0': ['70178'],
-                    '1': ['70179'],
-                },
+                stops: { '0': ['70178'], '1': ['70179'] },
                 accessible: true,
             },
             {
@@ -1277,10 +950,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-bcnfd',
                 order: 305,
-                stops: {
-                    '0': ['70176'],
-                    '1': ['70177'],
-                },
+                stops: { '0': ['70176'], '1': ['70177'] },
                 accessible: false,
             },
             {
@@ -1288,10 +958,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-rsmnl',
                 order: 306,
-                stops: {
-                    '0': ['70174'],
-                    '1': ['70175'],
-                },
+                stops: { '0': ['70174'], '1': ['70175'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -1300,10 +967,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-chhil',
                 order: 307,
-                stops: {
-                    '0': ['70172'],
-                    '1': ['70173'],
-                },
+                stops: { '0': ['70172'], '1': ['70173'] },
                 accessible: false,
                 enclosed_bike_parking: true,
             },
@@ -1312,10 +976,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-newto',
                 order: 308,
-                stops: {
-                    '0': ['70170'],
-                    '1': ['70171'],
-                },
+                stops: { '0': ['70170'], '1': ['70171'] },
                 accessible: true,
             },
             {
@@ -1323,10 +984,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-newtn',
                 order: 309,
-                stops: {
-                    '0': ['70168'],
-                    '1': ['70169'],
-                },
+                stops: { '0': ['70168'], '1': ['70169'] },
                 accessible: true,
             },
             {
@@ -1334,10 +992,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-eliot',
                 order: 310,
-                stops: {
-                    '0': ['70166'],
-                    '1': ['70167'],
-                },
+                stops: { '0': ['70166'], '1': ['70167'] },
                 accessible: false,
                 enclosed_bike_parking: true,
             },
@@ -1346,10 +1001,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-waban',
                 order: 311,
-                stops: {
-                    '0': ['70164'],
-                    '1': ['70165'],
-                },
+                stops: { '0': ['70164'], '1': ['70165'] },
                 accessible: false,
             },
             {
@@ -1357,10 +1009,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-woodl',
                 order: 312,
-                stops: {
-                    '0': ['70162'],
-                    '1': ['70163'],
-                },
+                stops: { '0': ['70162'], '1': ['70163'] },
                 accessible: true,
                 enclosed_bike_parking: true,
             },
@@ -1369,10 +1018,7 @@ export const stations = {
                 branches: ['D'],
                 station: 'place-river',
                 order: 313,
-                stops: {
-                    '0': ['70160'],
-                    '1': ['70161'],
-                },
+                stops: { '0': ['70160'], '1': ['70161'] },
                 accessible: true,
                 enclosed_bike_parking: true,
                 terminus: true,
@@ -1382,10 +1028,7 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-prmnl',
                 order: 401,
-                stops: {
-                    '0': ['70240'],
-                    '1': ['70239'],
-                },
+                stops: { '0': ['70240'], '1': ['70239'] },
                 accessible: true,
             },
             {
@@ -1393,10 +1036,7 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-symcl',
                 order: 402,
-                stops: {
-                    '0': ['70242'],
-                    '1': ['70241'],
-                },
+                stops: { '0': ['70242'], '1': ['70241'] },
                 accessible: false,
             },
             {
@@ -1404,10 +1044,7 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-nuniv',
                 order: 403,
-                stops: {
-                    '0': ['70244'],
-                    '1': ['70243'],
-                },
+                stops: { '0': ['70244'], '1': ['70243'] },
                 accessible: true,
             },
             {
@@ -1415,10 +1052,7 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-mfa',
                 order: 404,
-                stops: {
-                    '0': ['70246'],
-                    '1': ['70245'],
-                },
+                stops: { '0': ['70246'], '1': ['70245'] },
                 accessible: true,
             },
             {
@@ -1426,10 +1060,7 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-lngmd',
                 order: 405,
-                stops: {
-                    '0': ['70248'],
-                    '1': ['70247'],
-                },
+                stops: { '0': ['70248'], '1': ['70247'] },
                 accessible: true,
             },
             {
@@ -1437,10 +1068,7 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-brmnl',
                 order: 406,
-                stops: {
-                    '0': ['70250'],
-                    '1': ['70249'],
-                },
+                stops: { '0': ['70250'], '1': ['70249'] },
                 accessible: true,
             },
             {
@@ -1448,10 +1076,7 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-fenwd',
                 order: 407,
-                stops: {
-                    '0': ['70252'],
-                    '1': ['70251'],
-                },
+                stops: { '0': ['70252'], '1': ['70251'] },
                 accessible: false,
             },
             {
@@ -1459,10 +1084,7 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-mispk',
                 order: 408,
-                stops: {
-                    '0': ['70254'],
-                    '1': ['70253'],
-                },
+                stops: { '0': ['70254'], '1': ['70253'] },
                 accessible: false,
             },
             {
@@ -1470,10 +1092,7 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-rvrwy',
                 order: 409,
-                stops: {
-                    '0': ['70256'],
-                    '1': ['70255'],
-                },
+                stops: { '0': ['70256'], '1': ['70255'] },
                 accessible: false,
             },
             {
@@ -1481,10 +1100,7 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-bckhl',
                 order: 410,
-                stops: {
-                    '0': ['70258'],
-                    '1': ['70257'],
-                },
+                stops: { '0': ['70258'], '1': ['70257'] },
                 accessible: false,
             },
             {
@@ -1492,12 +1108,82 @@ export const stations = {
                 branches: ['E'],
                 station: 'place-hsmnl',
                 order: 411,
-                stops: {
-                    '0': ['70260'],
-                    '1': ['70260'],
-                },
+                stops: { '0': ['70260'], '1': ['70260'] },
                 accessible: true,
                 terminus: true,
+            },
+        ],
+    },
+    Mattapan: {
+        type: 'rapidtransit',
+        direction: { '0': 'northbound', '1': 'southbound' },
+        stations: [
+            {
+                stop_name: 'Ashmont',
+                branches: null,
+                station: 'place-asmnl',
+                order: 101,
+                stops: { '0': ['70261', '70094'], '1': ['70261', '70093'] },
+                accessible: true,
+                enclosed_bike_parking: true,
+                pedal_park: true,
+                terminus: true,
+            },
+            {
+                stop_name: 'Cedar Grove',
+                branches: null,
+                station: 'place-cedgr',
+                order: 102,
+                stops: { '0': ['70264'], '1': ['70263'] },
+                accessible: true,
+            },
+            {
+                stop_name: 'Butler',
+                branches: null,
+                station: 'place-butlr',
+                order: 103,
+                stops: { '0': ['70266'], '1': ['70265'] },
+                accessible: true,
+            },
+            {
+                stop_name: 'Milton',
+                branches: null,
+                station: 'place-miltt',
+                order: 104,
+                stops: { '0': ['70268'], '1': ['70267'] },
+                accessible: true,
+            },
+            {
+                stop_name: 'Central Avenue',
+                branches: null,
+                station: 'place-cenav',
+                order: 105,
+                stops: { '0': ['70270'], '1': ['70269'] },
+                accessible: true,
+            },
+            {
+                stop_name: 'Valley Road',
+                branches: null,
+                station: 'place-valrd',
+                order: 106,
+                stops: { '0': ['70272'], '1': ['70271'] },
+                accessible: true,
+            },
+            {
+                stop_name: 'Capen Street',
+                branches: null,
+                station: 'place-capst',
+                order: 107,
+                stops: { '0': ['70274'], '1': ['70273'] },
+                accessible: true,
+            },
+            {
+                stop_name: 'Mattapan',
+                branches: null,
+                station: 'place-matt',
+                order: 108,
+                stops: { '0': ['70276'], '1': ['70275'] },
+                accessible: true,
             },
         ],
     },
