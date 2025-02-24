@@ -5,7 +5,7 @@ import type { StationDetails, Turtle } from '../diagrams/types';
 
 import { stations } from './stations';
 
-type DiagrammableLineName = 'Red' | 'Green' | 'Orange' | 'Blue' | 'Mattapan';
+export type DiagrammableLineName = 'Red' | 'Green' | 'Orange' | 'Blue' | 'Mattapan';
 
 type CreateDiagramOptions = {
     /** Number of pixels between each station */
