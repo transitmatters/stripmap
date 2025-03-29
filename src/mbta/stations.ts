@@ -1167,7 +1167,7 @@ export const stations = {
                 station: 'place-valrd',
                 order: 106,
                 stops: { '0': ['70272'], '1': ['70271'] },
-                accessible: true,
+                accessible: false,
             },
             {
                 stop_name: 'Capen Street',
@@ -1184,6 +1184,7 @@ export const stations = {
                 order: 108,
                 stops: { '0': ['70276'], '1': ['70275'] },
                 accessible: true,
+                terminus: true,
             },
         ],
     },
