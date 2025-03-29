@@ -206,4 +206,21 @@ export class Path {
         }
         return null;
     }
+
+    getTangentAngle(displacement: number): number {
+        const { segment, displacement: segmentDisplacement } = this.seek(displacement);
+
+        const lookAhead = Math.min(0.01, (segment.length() - segmentDisplacement) / segment.length());
+        const currentT = segmentDisplacement / segment.length();
+        const nextT = Math.min(currentT + lookAhead, 1);
+
+        const currentPoint = segment.get(currentT);
+        const nextPoint = segment.get(nextT);
+
+        const dx = nextPoint.x - currentPoint.x;
+        const dy = nextPoint.y - currentPoint.y;
+        const angle = Math.atan2(dx, -dy) * (180 / Math.PI);
+
+        return angle;
+    }
 }

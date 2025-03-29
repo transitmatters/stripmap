@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 
-import type { Path, Diagram, SegmentLocation, Station, Point } from '../../diagrams';
+import type { Path, Diagram, SegmentLocation, Station, Point, Vehicle } from '../../diagrams';
 import { useDiagramCoordinates, useLineTooltip } from '../../hooks';
 
 import * as styles from './LineMap.css';
+import { VehicleMarker } from '../VehicleMarker';
 
 type MapSide = '0' | '1';
 
@@ -40,6 +41,13 @@ type TooltipOptions = {
     maxDistance?: number;
 };
 
+export interface VehicleRenderOptions {
+    size?: number;
+    fill?: string;
+    stroke?: string;
+    strokeWidth?: number;
+}
+
 export interface LineMapProps {
     diagram: Diagram;
     direction?: 'vertical' | 'horizontal';
@@ -48,6 +56,8 @@ export interface LineMapProps {
     getStationLabel?: (options: { stationId: string; stationName: string }) => string;
     getScaleBasis?: (viewport: { width: null | number; height: null | number }) => number;
     getSegments?: (options: { isHorizontal: boolean }) => SegmentRenderOptions[];
+    vehicles?: Vehicle[];
+    vehicleOptions?: VehicleRenderOptions;
 }
 
 const getPropsForStrokeOptions = (options: Partial<StrokeOptions>) => {
@@ -91,6 +101,8 @@ export const LineMap = (props: LineMapProps) => {
         strokeOptions = {},
         tooltip,
         getSegments,
+        vehicles = [],
+        vehicleOptions = {},
     } = props;
     const {
         svgRef,
@@ -210,6 +222,36 @@ export const LineMap = (props: LineMapProps) => {
         return <path d={pathDirective} {...getPropsForStrokeOptions(strokeOptions)} />;
     };
 
+    const renderVehicles = () => {
+        // Define a drop shadow filter
+        const shadowId = 'vehicle-drop-shadow';
+
+        return (
+            <>
+                <defs>
+                    <filter id={shadowId} x='-50%' y='-50%' width='200%' height='200%'>
+                        <feDropShadow dx='0' dy='0' stdDeviation='0.3' floodOpacity='0.3' />
+                    </filter>
+                </defs>
+                {vehicles.map((vehicle) => {
+                    const path = diagram.getPathBetweenStations(vehicle.fromStationId, vehicle.toStationId);
+                    const totalLength = path.length;
+                    const position = vehicle.position * totalLength;
+                    const point = path.getPointFromDisplacement(position);
+                    const angleDegrees = path.getTangentAngle(position);
+                    return (
+                        <g
+                            key={`vehicle-${vehicle.id}`}
+                            transform={`translate(${point.x}, ${point.y}) rotate(${angleDegrees})`}
+                        >
+                            <VehicleMarker {...vehicleOptions} />
+                        </g>
+                    );
+                })}
+            </>
+        );
+    };
+
     const renderComputedStrokes = () => {
         return computedSegmentExtras
             .map((segment, segmentIndex) => {
@@ -269,6 +311,7 @@ export const LineMap = (props: LineMapProps) => {
                         {renderComputedLabels()}
                         {renderStationDots()}
                         {renderStationLabels()}
+                        {renderVehicles()}
                     </g>
                 </svg>
             </div>

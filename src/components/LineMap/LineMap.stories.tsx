@@ -3,6 +3,7 @@ import React from 'react';
 import type { SegmentRenderOptions } from './LineMap';
 import { LineMap } from './LineMap';
 import { createDefaultDiagramForLine } from '../..';
+import type { Vehicle } from '../../diagrams';
 
 export default {
     title: 'LineMap',
@@ -66,6 +67,58 @@ export const Main = () => {
                 getStationLabel={(options) => options.stationId}
                 strokeOptions={{ stroke: 'red' }}
                 getSegments={() => redLineSegments}
+            />
+        </>
+    );
+};
+
+// Sample vehicles for the Red Line
+const redLineVehicles: Vehicle[] = [
+    {
+        id: 'train-1',
+        fromStationId: 'place-pktrm',
+        toStationId: 'place-cntsq',
+        position: 0.3,
+        direction: 'outbound',
+    },
+    {
+        id: 'train-2',
+        fromStationId: 'place-shmnl',
+        toStationId: 'place-pktrm',
+        position: 0.7,
+        direction: 'inbound',
+    },
+    {
+        id: 'train-3',
+        fromStationId: 'place-cntsq',
+        toStationId: 'place-harsq',
+        position: 0.5,
+        direction: 'outbound',
+    },
+];
+
+export const WithVehicles = () => {
+    return (
+        <>
+            <h3>Horizontal Line Map with Vehicles</h3>
+            <LineMap
+                direction='horizontal'
+                diagram={redLine}
+                getStationLabel={(options) => options.stationId}
+                strokeOptions={{ stroke: 'red' }}
+                getSegments={() => redLineSegments}
+                vehicles={redLineVehicles}
+                vehicleOptions={{ size: 4 }}
+            />
+            <h3>Vertical Line Map with Vehicles</h3>
+            <LineMap
+                direction='vertical'
+                diagram={redLine}
+                getStationLabel={(options) => options.stationId}
+                strokeOptions={{ stroke: 'red' }}
+                getSegments={() => redLineSegments}
+                vehicles={redLineVehicles}
+                vehicleOptions={{ size: 4 }}
             />
         </>
     );

@@ -72,3 +72,11 @@ export type Point = {
     x: number;
     y: number;
 };
+
+export interface Vehicle {
+    id: string;
+    fromStationId: string;
+    toStationId: string;
+    position: number; // 0-1 value representing position along segment
+    direction?: 'inbound' | 'outbound';
+}
