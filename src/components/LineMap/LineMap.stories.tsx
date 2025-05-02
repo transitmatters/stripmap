@@ -12,7 +12,7 @@ const meta: Meta = {
         const { line, direction } = args;
         const diagram = createDefaultDiagramForLine(line);
 
-        const lineColor = line === 'Mattapan' ? 'red': line.toLowerCase();
+        const lineColor = line === 'Mattapan' ? 'red' : line.toLowerCase();
 
         return (
             <>
