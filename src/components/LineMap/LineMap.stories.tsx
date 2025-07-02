@@ -92,6 +92,26 @@ export const GreenLine = () => {
     const greenLineSegments: SegmentRenderOptions[] = [];
     const greenLine = createDefaultDiagramForLine('Green');
 
+    // Test that we can get paths between various station pairs without crashing
+    const testPairs = [
+        ['place-bland', 'place-kencl'], // Blandford to Kenmore (the original issue)
+        ['place-kencl', 'place-bland'], // Kenmore to Blandford (reverse)
+        ['place-bland', 'place-boyls'], // Blandford to Boylston (through trunk)
+        ['place-boyls', 'place-kencl'], // Boylston to Kenmore (within trunk)
+        ['place-buest', 'place-kencl'], // BU East to Kenmore (B branch to trunk)
+    ];
+
+    testPairs.forEach(([from, to]) => {
+        try {
+            const path = greenLine.getPathBetweenStations(from, to);
+            console.log(`✅ Successfully got path between ${from} and ${to}`);
+            console.log(`   Path length: ${path.length}`);
+        } catch (error) {
+            console.error(`❌ Failed to get path between ${from} and ${to}:`, error);
+            throw error; // Re-throw to make the test fail
+        }
+    });
+
     return (
         <LineMap
             direction='horizontal'
