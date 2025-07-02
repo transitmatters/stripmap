@@ -8,10 +8,11 @@ import type { DiagramProjection, PathProjection, SegmentLocation } from './types
 type StationDisplacementMap = Map<Path, Record<string, number>>;
 
 const indexRangesNamesByStationId = (stationsByRangeName: Record<string, Station[]>) => {
-    const index: Record<string, string> = {};
+    const index: Record<string, string[]> = {};
     for (const [rangeName, stations] of Object.entries(stationsByRangeName)) {
         for (const station of stations) {
-            index[station.station] = rangeName;
+            if (!index[station.station]) index[station.station] = [];
+            index[station.station].push(rangeName);
         }
     }
     return index;
@@ -41,7 +42,7 @@ export class Diagram {
     private paths: Path[];
     private stationsByRangeName: Record<string, Station[]>;
     private stations: Station[];
-    private readonly rangeNamesByStationId: Record<string, string>;
+    private readonly rangeNamesByStationId: Record<string, string[]>;
     private readonly stationDisplacementMap: StationDisplacementMap;
 
     constructor(paths: Path[], stationsByRangeName: Record<string, Station[]>) {
@@ -53,9 +54,9 @@ export class Diagram {
     }
 
     private getPathWithStationIds(stationIds: string[]) {
-        const rangeNames = stationIds.map((stationId) => this.rangeNamesByStationId[stationId]);
+        const rangeNamesList = stationIds.map((stationId) => this.rangeNamesByStationId[stationId]);
         for (const path of this.paths) {
-            if (rangeNames.every((rangeName) => path.hasRange(rangeName))) {
+            if (rangeNamesList.every((rangeNames) => rangeNames.some((rangeName) => path.hasRange(rangeName)))) {
                 return path;
             }
         }
