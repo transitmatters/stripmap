@@ -28,7 +28,7 @@ const getStationDisplacementMap = (paths: Path[], stationsByRangeName: Record<st
             if (stations) {
                 for (let i = 0; i < stations.length; i++) {
                     const station = stations[i];
-                    const fraction = i / (stations.length - 1);
+                    const fraction = stations.length <= 1 ? 1.0 : i / (stations.length - 1);
                     const displacement = path.getDisplacementFromRangeLookup({ fraction, range });
                     pathIndex[station.station] = displacement;
                 }
