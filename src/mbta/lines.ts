@@ -60,10 +60,10 @@ function getStationIndex(stations: StationDetails[], stationName: string): numbe
 
 export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
     const { pxPerStation = DEFAULT_PX_PER_STATION } = options;
-    const startB: Turtle = { x: 40, y: -130, theta: 90 };
-    const startC: Turtle = { x: 0, y: -80, theta: 90 };
-    const startD: Turtle = { x: -40, y: -80, theta: 90 };
-    const startE: Turtle = { x: -80, y: -40, theta: 90 };
+    const startB: Turtle = { x: 4 * pxPerStation, y: -13 * pxPerStation, theta: 90 };
+    const startC: Turtle = { x: 0, y: -8 * pxPerStation, theta: 90 };
+    const startD: Turtle = { x: -4 * pxPerStation, y: -6 * pxPerStation, theta: 90 };
+    const startE: Turtle = { x: -8 * pxPerStation, y: -4 * pxPerStation, theta: 90 };
     const stationsE = getStationsForLine('Green', 'E').reverse();
 
     // you could calculate this more easily if you just figured out all the places where
@@ -80,7 +80,7 @@ export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
     const kenmoreIdxD = getStationIndex(stationsD, 'place-kencl');
     const stationsTrunkForBCD = stationsD.slice(kenmoreIdxD, getStationIndex(stationsD, 'place-lech') + 1);
     const trunkCommandBCD = line(stationsTrunkForBCD.length * pxPerStation, ['trunk']);
-    const stationsDBeforeTrunk = stationsD.slice(0, getStationIndex(stationsD, 'place-coecl'));
+    const stationsDBeforeTrunk = stationsD.slice(0, kenmoreIdxD);
     const stationsDAfterTrunk = stationsD.slice(getStationIndex(stationsD, 'place-lech') + 1);
 
     const stationsC = getStationsForLine('Green', 'C').reverse();
@@ -91,53 +91,60 @@ export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
 
     const pathB = execute({
         start: startB,
-        ranges: ['branch-b-stations'],
+        ranges: [],
         commands: [
             line(pxPerStation * stationsBBeforeTrunk.length, ['branch-b-stations']),
-            line(70),
-            wiggle(15, -40),
+            line(7 * pxPerStation),
+            wiggle(2 * pxPerStation, -4 * pxPerStation),
             trunkCommandBCD,
         ],
     });
 
     const pathC = execute({
         start: startC,
-        ranges: ['branch-c-stations'],
-        commands: [line(pxPerStation * stationsCBeforeTrunk.length, ['branch-c-stations']), line(30), trunkCommandBCD],
+        ranges: [],
+        commands: [
+            line(pxPerStation * stationsCBeforeTrunk.length, ['branch-c-stations']),
+            line(3 * pxPerStation),
+            trunkCommandBCD,
+        ],
     });
 
     const pathD = execute({
         start: startD,
-        ranges: ['branch-d-stations'],
+        ranges: [],
         commands: [
-            line(pxPerStation * stationsDBeforeTrunk.length, ['branch-d-stations']),
-            line(30),
-            wiggle(15, 40),
+            line(pxPerStation * stationsDBeforeTrunk.length, ['branch-d-before']),
+            line(3 * pxPerStation),
+            wiggle(2 * pxPerStation, 4 * pxPerStation),
             trunkCommandBCD,
-            wiggle(15, 40),
-            line(pxPerStation * stationsDAfterTrunk.length, ['branch-d-stations']),
+            wiggle(2 * pxPerStation, -4 * pxPerStation),
+            line(pxPerStation * stationsDAfterTrunk.length, ['branch-d-after']),
         ],
     });
 
     const pathE = execute({
         start: startE,
-        ranges: ['branch-e-stations'],
+        ranges: [],
         commands: [
-            line(pxPerStation * stationsEBeforeTrunk.length, ['branch-e-stations']),
-            line(40),
-            wiggle(30, 80),
-            line(pxPerStation * stationsTrunkForE.length, ['trunk']),
-            line(40),
-            line(pxPerStation * stationsEAfterTrunk.length, ['branch-e-stations']),
+            line(pxPerStation * stationsEBeforeTrunk.length, ['branch-e-before']),
+            line(5 * pxPerStation),
+            wiggle(2 * pxPerStation, 8 * pxPerStation),
+            line(pxPerStation * stationsTrunkForE.length, ['trunk-e']),
+            line(4 * pxPerStation),
+            line(pxPerStation * stationsEAfterTrunk.length, ['branch-e-after']),
         ],
     });
 
     return new Diagram([pathB, pathC, pathD, pathE], {
         trunk: stationsTrunkForBCD,
-        'branch-b-stations': stationsB,
-        'branch-c-stations': stationsC,
-        'branch-d-stations': stationsD,
-        'branch-e-stations': stationsE,
+        'trunk-e': stationsTrunkForE,
+        'branch-b-stations': stationsBBeforeTrunk,
+        'branch-c-stations': stationsCBeforeTrunk,
+        'branch-d-before': stationsDBeforeTrunk,
+        'branch-d-after': stationsDAfterTrunk,
+        'branch-e-before': stationsEBeforeTrunk,
+        'branch-e-after': stationsEAfterTrunk,
     });
 };
 

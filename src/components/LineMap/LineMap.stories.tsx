@@ -89,8 +89,21 @@ export const RedLine = () => {
 };
 
 export const GreenLine = () => {
-    const greenLineSegments: SegmentRenderOptions[] = [];
-    const greenLine = createDefaultDiagramForLine('Green');
+    const greenLineSegments: SegmentRenderOptions[] = [
+        {
+            location: { toStationId: 'place-lech', fromStationId: 'place-unsqu' },
+            strokes: [{ offset: 1, stroke: 'green', opacity: 0.6 }],
+        },
+        {
+            location: { toStationId: 'place-esomr', fromStationId: 'place-lech' },
+            strokes: [{ offset: 1, stroke: 'green', opacity: 0.6 }],
+        },
+        {
+            location: { toStationId: 'place-prmnl', fromStationId: 'place-coecl' },
+            strokes: [{ offset: 1, stroke: 'green', opacity: 0.6 }],
+        },
+    ];
+    const greenLine = createDefaultDiagramForLine('Green', { pxPerStation: 15 });
 
     // Test that we can get paths between various station pairs without crashing
     const testPairs = [
@@ -99,6 +112,8 @@ export const GreenLine = () => {
         ['place-bland', 'place-boyls'], // Blandford to Boylston (through trunk)
         ['place-boyls', 'place-kencl'], // Boylston to Kenmore (within trunk)
         ['place-buest', 'place-kencl'], // BU East to Kenmore (B branch to trunk)
+        ['place-esomr', 'place-lech'], // East Somerville to Lechmere (E branch to trunk)
+        ['place-unsqu', 'place-lech'], // Union Square to Lechmere (D branch to trunk)
     ];
 
     testPairs.forEach(([from, to]) => {
