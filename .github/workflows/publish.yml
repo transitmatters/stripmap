@@ -1,0 +1,91 @@
+name: publish
+
+# Publishes @transitmatters/stripmap to npm and GitHub Packages whenever the
+# version in package.json on main has not been published yet. Each target is
+# checked independently, so re-running after a partial failure is safe.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+permissions:
+  contents: write # create the GitHub release + tag
+  id-token: write # npm trusted publishing (OIDC) + provenance
+  packages: write # publish to GitHub Packages
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+      - name: Set up Node for npm
+        uses: actions/setup-node@v7
+        with:
+          node-version: '26'
+          registry-url: 'https://registry.npmjs.org'
+          cache: npm
+      - name: Read package version
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Check if version is on npm
+        id: npm
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if npm view "@transitmatters/stripmap@$VERSION" version > /dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "$VERSION is already on npm"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Publish to npm
+        if: steps.npm.outputs.published == 'false'
+        run: npm publish --ignore-scripts --access public
+
+      - name: Set up Node for GitHub Packages
+        uses: actions/setup-node@v7
+        with:
+          node-version: '26'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@transitmatters'
+      - name: Check if version is on GitHub Packages
+        id: github
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if npm view "@transitmatters/stripmap@$VERSION" version > /dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "$VERSION is already on GitHub Packages"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish to GitHub Packages
+        if: steps.github.outputs.published == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --ignore-scripts
+
+      - name: Create GitHub release
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "$(git ls-remote --tags origin "v$VERSION")" ]; then
+            echo "v$VERSION is already tagged"
+          else
+            gh release create "v$VERSION" --target "$GITHUB_SHA" --generate-notes
+          fi

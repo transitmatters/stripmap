@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/transitmatters/stripmap"
+    "url": "git+https://github.com/transitmatters/stripmap.git"
   },
   "author": "Transitmatters Labs",
   "license": "MIT",
