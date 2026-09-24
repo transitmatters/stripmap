@@ -1,6 +1,6 @@
 {
   "name": "@transitmatters/stripmap",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Code to render strip maps of transit lines",
   "main": "dist/stripmap.umd.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/transitmatters/stripmap"
+    "url": "git+https://github.com/transitmatters/stripmap.git"
   },
   "author": "Transitmatters Labs",
   "license": "MIT",
