@@ -1,6 +1,7 @@
 import { line, wiggle } from '../diagrams/commands';
 import { Diagram } from '../diagrams/diagram';
 import { execute } from '../diagrams/execute';
+import { createStraightLineDiagram } from '../diagrams/straightLine';
 import type { StationDetails, Turtle } from '../diagrams/types';
 
 import { stations } from './stations';
@@ -148,18 +149,6 @@ export const createGreenLineDiagram = (options: CreateDiagramOptions = {}) => {
     });
 };
 
-const createStraightLineDiagram = (lineName: DiagrammableLineName, options: CreateDiagramOptions = {}) => {
-    const { pxPerStation = DEFAULT_PX_PER_STATION } = options;
-    const start: Turtle = { x: 0, y: 0, theta: 90 };
-    const stations = getStationsForLine(lineName);
-    const path = execute({
-        start,
-        ranges: ['main'],
-        commands: [line(pxPerStation * stations.length)],
-    });
-    return new Diagram([path], { main: stations });
-};
-
 export const createDefaultDiagramForLine = (lineName: DiagrammableLineName, options: CreateDiagramOptions = {}) => {
     switch (lineName) {
         case 'Red':
@@ -167,6 +156,6 @@ export const createDefaultDiagramForLine = (lineName: DiagrammableLineName, opti
         case 'Green':
             return createGreenLineDiagram(options);
         default:
-            return createStraightLineDiagram(lineName, options);
+            return createStraightLineDiagram(getStationsForLine(lineName), options);
     }
 };
