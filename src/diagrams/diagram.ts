@@ -7,6 +7,15 @@ import type { DiagramProjection, PathProjection, SegmentLocation } from './types
 
 type StationDisplacementMap = Map<Path, Record<string, number>>;
 
+export type DiagramOptions = {
+    /**
+     * Place segment labels alongside the longest straight, axis-aligned section of each segment,
+     * rather than alongside the bounding box of the whole segment. This keeps the labels for a
+     * branch that curves into a trunk from landing on top of the trunk's own labels.
+     */
+    anchorLabelsToStraightSections?: boolean;
+};
+
 const indexRangesNamesByStationId = (stationsByRangeName: Record<string, Station[]>) => {
     const index: Record<string, string[]> = {};
     for (const [rangeName, stations] of Object.entries(stationsByRangeName)) {
@@ -44,9 +53,11 @@ export class Diagram {
     private stations: Station[];
     private readonly rangeNamesByStationId: Record<string, string[]>;
     private readonly stationDisplacementMap: StationDisplacementMap;
+    private readonly options: DiagramOptions;
 
-    constructor(paths: Path[], stationsByRangeName: Record<string, Station[]>) {
+    constructor(paths: Path[], stationsByRangeName: Record<string, Station[]>, options: DiagramOptions = {}) {
         this.paths = paths;
+        this.options = options;
         this.stationsByRangeName = stationsByRangeName;
         this.rangeNamesByStationId = indexRangesNamesByStationId(stationsByRangeName);
         this.stationDisplacementMap = getStationDisplacementMap(paths, stationsByRangeName);
@@ -113,6 +124,15 @@ export class Diagram {
         const { [fromStationId]: fromDisplacement, [toStationId]: toDisplacement } =
             this.stationDisplacementMap.get(path)!;
         return path.cut(fromDisplacement, toDisplacement);
+    }
+
+    /** The part of the path between two stations that labels for that segment should sit beside */
+    getLabelPathBetweenStations(fromStationId: string, toStationId: string) {
+        const path = this.getPathBetweenStations(fromStationId, toStationId);
+        if (this.options.anchorLabelsToStraightSections) {
+            return path.getLongestStraightSection() ?? path;
+        }
+        return path;
     }
 
     toSVG() {
