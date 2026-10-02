@@ -4,6 +4,10 @@ import type { Path, Diagram, SegmentLocation, Station, Point } from '../../diagr
 import { useDiagramCoordinates, useLineTooltip } from '../../hooks';
 
 import * as styles from './LineMap.css';
+import { getWatermarkStyle } from './watermark';
+import type { WatermarkOptions } from './watermark';
+
+export type { WatermarkOptions, WatermarkPosition } from './watermark';
 
 type MapSide = '0' | '1';
 
@@ -48,6 +52,7 @@ export interface LineMapProps {
     getStationLabel?: (options: { stationId: string; stationName: string }) => string;
     getScaleBasis?: (viewport: { width: null | number; height: null | number }) => number;
     getSegments?: (options: { isHorizontal: boolean }) => SegmentRenderOptions[];
+    watermark?: WatermarkOptions;
 }
 
 const getPropsForStrokeOptions = (options: Partial<StrokeOptions>) => {
@@ -91,6 +96,7 @@ export const LineMap = (props: LineMapProps) => {
         strokeOptions = {},
         tooltip,
         getSegments,
+        watermark,
     } = props;
     const {
         svgRef,
@@ -259,6 +265,17 @@ export const LineMap = (props: LineMapProps) => {
         }
     };
 
+    const renderWatermark = () => {
+        if (watermark) {
+            return (
+                <div className={styles.watermarkContainer} style={getWatermarkStyle(watermark)}>
+                    {watermark.content}
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <div className={styles.container} ref={containerRef}>
             <div className={styles.inner}>
@@ -272,6 +289,7 @@ export const LineMap = (props: LineMapProps) => {
                     </g>
                 </svg>
             </div>
+            {renderWatermark()}
             {renderTooltip()}
         </div>
     );
