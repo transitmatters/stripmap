@@ -137,6 +137,57 @@ export const GreenLine = () => {
     );
 };
 
+const abbreviateStationName = ({ stationName }: { stationName: string }) =>
+    stationName
+        .replace('Boston University', 'BU')
+        .replace('Hynes Convention Center', 'Hynes')
+        .replace('Government Center', "Gov't Center")
+        .replace('Northeastern University', 'Northeastern')
+        .replace('Museum of Fine Arts', 'MFA');
+
+// Mirrors how the TransitMatters dashboard renders the Green Line: every adjacent station pair
+// gets offset strokes and a label, which makes overlapping segments and labels easy to spot.
+const GreenLineWithAllSegments = ({ direction }: { direction: 'horizontal' | 'vertical' }) => {
+    const diagram = createDefaultDiagramForLine('Green', { pxPerStation: 15, direction });
+    const segments: SegmentRenderOptions[] = diagram.getAdjacentSegmentLocations().map((location) => ({
+        location,
+        strokes: [
+            { offset: 1, stroke: 'green', strokeWidth: 2, opacity: 0.3 },
+            { offset: -1, stroke: 'green', strokeWidth: 2, opacity: 0.3 },
+        ],
+        labels: [
+            {
+                mapSide: '0',
+                boundingSize: direction === 'horizontal' ? 15 : 20,
+                // Same shape as the dashboard's speed labels: one line per direction, centered
+                content: ({ width, height }) => (
+                    <g fontSize={4} textAnchor='middle' fill='#333'>
+                        <text x={width / 2} y={height / 2 - 1.5}>
+                            ❮ 12 mph
+                        </text>
+                        <text x={width / 2} y={height / 2 + 4.5}>
+                            14 mph ❯
+                        </text>
+                    </g>
+                ),
+            },
+        ],
+    }));
+    return (
+        <LineMap
+            direction={direction}
+            diagram={diagram}
+            strokeOptions={{ stroke: 'green' }}
+            getStationLabel={abbreviateStationName}
+            getSegments={() => segments}
+        />
+    );
+};
+
+export const GreenLineAllSegmentsHorizontal = () => <GreenLineWithAllSegments direction='horizontal' />;
+
+export const GreenLineAllSegmentsVertical = () => <GreenLineWithAllSegments direction='vertical' />;
+
 export const Watermarked = () => {
     const diagram = createDefaultDiagramForLine('Orange');
     return (

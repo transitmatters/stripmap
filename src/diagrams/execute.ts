@@ -73,8 +73,9 @@ const executeWiggle = (command: WiggleCommand, turtle: Turtle): CommandResult =>
     const x2 = x1 + length * cosd(theta) + width * cosd(theta - 90);
     const y2 = y1 + length * sind(theta) + width * sind(theta - 90);
     // The first control point is parallel to the turtle's incoming line, and is half the total
-    // distance between (x1, y1) and (x2, y2).
-    const halfDist = 0.5 * Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
+    // distance between (x1, y1) and (x2, y2). It's capped at the wiggle's length, because past
+    // that point the control points cross over each other and the curve loops back on itself.
+    const halfDist = Math.min(length, 0.5 * Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2)));
     const xp1 = x1 + halfDist * cosd(theta);
     const yp1 = y1 + halfDist * sind(theta);
     // The second control point is parallel to the turtle's outgoing line, and is also half the
