@@ -144,7 +144,7 @@ export const LineMap = (props: LineMapProps) => {
             } = segment;
 
             const path = diagram.getPathBetweenStations(fromStationId, toStationId);
-            const bounds = path.getBounds();
+            const bounds = diagram.getLabelPathBetweenStations(fromStationId, toStationId).getBounds();
 
             const computedStrokes = strokes.map((stroke) => {
                 const pathDirective = path.offset(stroke.offset ?? 0).toSVG();
