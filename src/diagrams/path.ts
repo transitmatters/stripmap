@@ -140,10 +140,12 @@ export class Path {
         const intermediate = this.segments.slice(fromIndex + 1, toIndex);
         const fractionInToSegment = displacementInToSegment / toSegmentLength;
         const partOfToSegment = toSegment.split(0, fractionInToSegment);
+        // Floating point error can leave slivers of the segments at either end, which can't be offset
+        const isSliver = (part: Bezier) => part.length() < 1e-6;
         const includedParts = [
-            fractionInFromSegment !== 1 && partOfFromSegment,
+            fractionInFromSegment !== 1 && !isSliver(partOfFromSegment) && partOfFromSegment,
             ...intermediate,
-            fractionInToSegment !== 0 && partOfToSegment,
+            fractionInToSegment !== 0 && !isSliver(partOfToSegment) && partOfToSegment,
         ].filter((x): x is Bezier => !!x);
         return new Path(includedParts);
     }
@@ -153,6 +155,26 @@ export class Path {
             return this;
         }
         return new Path(this.segments.map((segment) => segment.offset(distance) as unknown as Bezier).flat());
+    }
+
+    /**
+     * The longest segment that runs straight along the y axis (the direction LineMap lays lines out
+     * in), as its own path, or null if there isn't one. Slivers left over from cutting the path are
+     * ignored.
+     */
+    getLongestStraightSection(minLength = 1) {
+        const isStraight = (segment: Bezier) => {
+            const [first, ...rest] = segment.points;
+            return rest.every((p) => Math.abs(p.x - first.x) < 1e-6);
+        };
+        const straightSegments = this.segments.filter(
+            (segment) => isStraight(segment) && segment.length() >= minLength,
+        );
+        if (straightSegments.length === 0) {
+            return null;
+        }
+        const longest = straightSegments.reduce((a, b) => (b.length() > a.length() ? b : a));
+        return new Path([longest]);
     }
 
     toSVG() {
