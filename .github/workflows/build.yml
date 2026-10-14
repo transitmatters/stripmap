@@ -1,0 +1,81 @@
+name: build
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build library
+        run: npm run build
+      - name: Build Storybook
+        run: npm run build-storybook
+      - name: Lint package with publint
+        run: npx --yes publint
+      - name: Pack tarball
+        run: npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP/pack"
+      - name: Upload tarball
+        uses: actions/upload-artifact@v7
+        with:
+          name: package
+          path: ${{ runner.temp }}/pack/*.tgz
+          if-no-files-found: error
+
+  # Installs the packed tarball into a fresh project for every supported React
+  # major and checks that it renders and type-checks there.
+  compat:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        react-version: ['18', '19']
+        node-version: ['22', '24', '26']
+    name: compat (react ${{ matrix.react-version }}, node ${{ matrix.node-version }})
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+      - name: Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Download tarball
+        uses: actions/download-artifact@v8
+        with:
+          name: package
+          path: ${{ runner.temp }}/pack
+      - name: Create consumer project
+        env:
+          REACT_VERSION: ${{ matrix.react-version }}
+        run: |
+          CONSUMER_DIR="$RUNNER_TEMP/consumer"
+          echo "CONSUMER_DIR=$CONSUMER_DIR" >> "$GITHUB_ENV"
+          mkdir -p "$CONSUMER_DIR"
+          cp .github/compat/* "$CONSUMER_DIR/"
+          cd "$CONSUMER_DIR"
+          npm init -y > /dev/null
+          npm install --no-audit --no-fund "$RUNNER_TEMP"/pack/*.tgz \
+            "react@$REACT_VERSION" "react-dom@$REACT_VERSION" \
+            "@types/react@$REACT_VERSION" "@types/react-dom@$REACT_VERSION" \
+            typescript jsdom
+          npm ls react react-dom @transitmatters/stripmap
+      - name: Render LineMap
+        run: cd "$CONSUMER_DIR" && node smoke.cjs
+      - name: Type check consumer
+        run: cd "$CONSUMER_DIR" && npx tsc -p .
