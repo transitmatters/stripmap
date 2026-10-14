@@ -26,3 +26,9 @@ import { StraightLineMap } from '@transitmatters/stripmap';
 ```
 
 It accepts the same props as `LineMap` (`direction`, `tooltip`, `getSegments`, etc.) apart from `diagram`. If you need the `Diagram` itself, call `createStraightLineDiagram(stations, { pxPerStation })` and pass it to `LineMap`.
+
+## Releasing
+
+Bump the `version` in `package.json` (e.g. `npm version patch --no-git-tag-version`) and merge to `main`. The [publish workflow](.github/workflows/publish.yml) will build, test, and publish the new version to [npm](https://www.npmjs.com/package/@transitmatters/stripmap) and GitHub Packages, then create a `vX.Y.Z` GitHub release. Pushes that don't change the version publish nothing.
+
+Publishing to npm uses [trusted publishing](https://docs.npmjs.com/trusted-publishers), so no npm token is needed. It is configured on npmjs.com under the package's Settings → Trusted Publisher (GitHub Actions, org `transitmatters`, repo `stripmap`, workflow `publish.yml`).

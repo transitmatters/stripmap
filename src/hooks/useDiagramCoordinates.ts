@@ -15,6 +15,9 @@ type SvgProps = {
 
 export type CoordinateTransform = (p: Point) => Point;
 
+const MIN_HORIZONTAL_SCALE = 1.8;
+const MAX_HORIZONTAL_SCALE = 4;
+
 const defaultGetScaleBasis = (viewport: { width: null | number; height: null | number }) => {
     const { width, height } = viewport;
     const MAX_SCALE_BASIS = 3.5;
@@ -46,8 +49,13 @@ export const useDiagramCoordinates = (options: Options) => {
             const y = Math.round(bbox.y - paddingY);
             const height = Math.round(bbox.height + paddingY * 2);
             if (isHorizontal && container) {
+                // Fill the container, unless that would make the map too small to read (in which case
+                // it scrolls) or blow it up past the point of being useful
                 const containerWidth = container.getBoundingClientRect().width;
-                const mapWidth = Math.min(4 * width, Math.max(Math.max(3 * width, containerWidth)));
+                const mapWidth = Math.min(
+                    MAX_HORIZONTAL_SCALE * width,
+                    Math.max(MIN_HORIZONTAL_SCALE * width, containerWidth),
+                );
                 const aspectRatio = width / height;
                 setSvgProps({
                     viewBox: `${x} ${y} ${width} ${height}`,
