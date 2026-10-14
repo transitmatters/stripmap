@@ -29,7 +29,9 @@ jobs:
       - name: Lint package with publint
         run: npx --yes publint
       - name: Pack tarball
-        run: npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP/pack"
+        run: |
+          mkdir -p "$RUNNER_TEMP/pack"
+          npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP/pack"
       - name: Upload tarball
         uses: actions/upload-artifact@v7
         with:
