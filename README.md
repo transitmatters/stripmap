@@ -8,6 +8,18 @@ This library can be used to create strip maps using React and SVG, like this one
 
 <img width="1146" alt="image" src="https://github.com/transitmatters/stripmap/assets/2208769/5d1724a5-4349-4bea-8f46-6a038bb31b65">
 
+## Development
+
+```
+npm install
+npm run check      # ESLint + tsc
+npm test           # Jest
+npm run build      # Library build into dist/
+npm run storybook  # Component stories on port 6006
+```
+
+Components live in `src/components/`, diagram geometry in `src/diagrams/`, and MBTA line and station data in `src/mbta/`.
+
 ## Releasing
 
 Bump the `version` in `package.json` (e.g. `npm version patch --no-git-tag-version`) and merge to `main`. The [publish workflow](.github/workflows/publish.yml) will build, test, and publish the new version to [npm](https://www.npmjs.com/package/@transitmatters/stripmap) and GitHub Packages, then create a `vX.Y.Z` GitHub release. Pushes that don't change the version publish nothing.
