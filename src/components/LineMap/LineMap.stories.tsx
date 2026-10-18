@@ -188,6 +188,22 @@ export const GreenLineAllSegmentsHorizontal = () => <GreenLineWithAllSegments di
 
 export const GreenLineAllSegmentsVertical = () => <GreenLineWithAllSegments direction='vertical' />;
 
+export const Watermarked = () => {
+    const diagram = createDefaultDiagramForLine('Orange');
+    return (
+        <LineMap
+            direction='vertical'
+            diagram={diagram}
+            strokeOptions={{ stroke: 'orange' }}
+            watermark={{
+                position: 'bottom-right',
+                opacity: 0.2,
+                content: <div style={{ fontSize: 16, fontWeight: 'bold' }}>TransitMatters</div>,
+            }}
+        />
+    );
+};
+
 export const Main: StoryObj = { args: { line: 'Red', direction: 'horizontal' } };
 
 export default meta;
