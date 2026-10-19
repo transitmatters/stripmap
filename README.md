@@ -27,6 +27,18 @@ import { StraightLineMap } from '@transitmatters/stripmap';
 
 It accepts the same props as `LineMap` (`direction`, `tooltip`, `getSegments`, etc.) apart from `diagram`. If you need the `Diagram` itself, call `createStraightLineDiagram(stations, { pxPerStation })` and pass it to `LineMap`.
 
+## Development
+
+```
+npm install
+npm run check      # ESLint + tsc
+npm test           # Jest
+npm run build      # Library build into dist/
+npm run storybook  # Component stories on port 6006
+```
+
+Components live in `src/components/`, diagram geometry in `src/diagrams/`, and MBTA line and station data in `src/mbta/`.
+
 ## Releasing
 
 Bump the `version` in `package.json` (e.g. `npm version patch --no-git-tag-version`) and merge to `main`. The [publish workflow](.github/workflows/publish.yml) will build, test, and publish the new version to [npm](https://www.npmjs.com/package/@transitmatters/stripmap) and GitHub Packages, then create a `vX.Y.Z` GitHub release. Pushes that don't change the version publish nothing.

@@ -16,6 +16,12 @@ export const tooltipContainer = style({
     },
 });
 
+export const watermarkContainer = style({
+    position: 'absolute',
+    pointerEvents: 'none',
+    userSelect: 'none',
+});
+
 export const inner = style({
     overflowX: 'scroll',
 });
