@@ -1,15 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import type { Path, Diagram, SegmentLocation, Station, Point } from '../../diagrams';
+import type { Diagram, SegmentLocation, Station, Point } from '../../diagrams';
 import { useDiagramCoordinates, useLineTooltip } from '../../hooks';
 
 import * as styles from './LineMap.css';
+import { getSegmentLabelBounds, getStationLabelBounds } from './labels';
+import type { SegmentLabel, StationLabel } from './labels';
 import { getWatermarkStyle } from './watermark';
 import type { WatermarkOptions } from './watermark';
 
+export type { SegmentLabel, StationLabel } from './labels';
 export type { WatermarkOptions, WatermarkPosition } from './watermark';
-
-type MapSide = '0' | '1';
 
 type StrokeOptions = {
     stroke: string;
@@ -17,21 +18,20 @@ type StrokeOptions = {
     opacity: number;
 };
 
-type Rect = ReturnType<InstanceType<typeof Path>['getBounds']>;
-
 type OffsetStrokeOptions = StrokeOptions & { offset?: number };
-
-export type SegmentLabel = {
-    mapSide: MapSide;
-    boundingSize?: number;
-    offset?: { x: number; y: number };
-    content: (size: { width: number; height: number }) => React.ReactNode;
-};
 
 export type SegmentRenderOptions = {
     location: SegmentLocation;
     strokes?: Partial<OffsetStrokeOptions>[];
     labels?: SegmentLabel[];
+};
+
+export type StationDotOptions = Partial<StrokeOptions> & { radius?: number; fill?: string };
+
+export type StationRenderOptions = {
+    stationId: string;
+    dot?: StationDotOptions;
+    labels?: StationLabel[];
 };
 
 export type TooltipSide = 'left' | 'right' | 'top';
@@ -44,6 +44,12 @@ type TooltipOptions = {
     maxDistance?: number;
 };
 
+type StationTooltipRenderer = (props: { stationId: string; stationName: string; side: TooltipSide }) => React.ReactNode;
+
+export type StationTooltipOptions = {
+    render: StationTooltipRenderer;
+};
+
 export interface LineMapProps {
     diagram: Diagram;
     direction?: 'vertical' | 'horizontal';
@@ -52,8 +58,17 @@ export interface LineMapProps {
     getStationLabel?: (options: { stationId: string; stationName: string }) => string;
     getScaleBasis?: (viewport: { width: null | number; height: null | number }) => number;
     getSegments?: (options: { isHorizontal: boolean }) => SegmentRenderOptions[];
+    /** Per-station dot styles and labels, e.g. to show ridership at each stop */
+    getStations?: (options: { isHorizontal: boolean }) => StationRenderOptions[];
+    /** Shown while a station is hovered or focused, in place of the segment tooltip */
+    stationTooltip?: StationTooltipOptions;
+    onStationClick?: (stationId: string) => void;
     watermark?: WatermarkOptions;
 }
+
+const DEFAULT_STATION_DOT_RADIUS = 1.5;
+// Less than half the default spacing between stations, so neighboring targets don't overlap
+const STATION_HIT_TARGET_RADIUS = 4;
 
 const getPropsForStrokeOptions = (options: Partial<StrokeOptions>) => {
     return {
@@ -62,28 +77,6 @@ const getPropsForStrokeOptions = (options: Partial<StrokeOptions>) => {
         strokeWidth: 1,
         opacity: 1,
         ...options,
-    };
-};
-
-const getSegmentLabelBounds = (segmentBounds: Rect, segmentLabel: SegmentLabel, isHorizontal: boolean) => {
-    const { top, left, right, width, height } = segmentBounds;
-    const { boundingSize = 10, offset: providedOffset, mapSide } = segmentLabel;
-    const offset = providedOffset || { x: 0, y: 0 };
-    if (isHorizontal) {
-        const moveAcross = mapSide === '0';
-        return {
-            x: top + offset.x,
-            y: 0 - left - (moveAcross ? boundingSize + width : 0) + offset.y,
-            width: height,
-            height: boundingSize,
-        } as const;
-    }
-    const moveAcross = mapSide === '1';
-    return {
-        x: right - (moveAcross ? boundingSize + width : 0) + offset.x,
-        y: top + offset.y,
-        height,
-        width: boundingSize,
     };
 };
 
@@ -96,8 +89,12 @@ export const LineMap = (props: LineMapProps) => {
         strokeOptions = {},
         tooltip,
         getSegments,
+        getStations,
+        stationTooltip,
+        onStationClick,
         watermark,
     } = props;
+    const [hoveredStationId, setHoveredStationId] = useState<null | string>(null);
     const {
         svgRef,
         svgProps,
@@ -171,18 +168,50 @@ export const LineMap = (props: LineMapProps) => {
         });
     }, [getSegments, diagram, isHorizontal]);
 
+    const computedStationExtras = useMemo(() => {
+        const stations = getStations ? getStations({ isHorizontal }) : [];
+        const dotsByStationId: Record<string, StationDotOptions> = {};
+        const computedLabels: React.ReactNode[] = [];
+        for (const { stationId, dot, labels = [] } of stations) {
+            const position = stationPositions[stationId];
+            // Skip stations that aren't on this diagram, so callers can pass data for a whole line
+            if (!position) continue;
+            if (dot) dotsByStationId[stationId] = dot;
+            labels.forEach((label, index) => {
+                const { x, y, width, height } = getStationLabelBounds(position, label, isHorizontal);
+                computedLabels.push(
+                    <g key={`station-extra-label-${stationId}-${index}`} transform={`translate(${x}, ${y})`}>
+                        <rect x={0} y={0} width={width} height={height} fill='transparent' />
+                        {label.content({ width, height })}
+                    </g>,
+                );
+            });
+        }
+        return { dotsByStationId, computedLabels };
+    }, [getStations, stationPositions, isHorizontal]);
+
+    const getTooltipSide = (viewportX: undefined | number): TooltipSide => {
+        const tooltipOnRightSide = viewportX && viewportX / window.innerWidth <= 0.5;
+        return isHorizontal ? 'top' : tooltipOnRightSide ? 'right' : 'left';
+    };
+
     const renderStationDots = () => {
-        const strokeProps = getPropsForStrokeOptions(strokeOptions);
         return Object.entries(stationPositions).map(([stationId, pos]) => {
+            const {
+                radius = DEFAULT_STATION_DOT_RADIUS,
+                fill = 'white',
+                ...dotStrokeOptions
+            } = computedStationExtras.dotsByStationId[stationId] ?? {};
+            const strokeProps = getPropsForStrokeOptions({ ...strokeOptions, ...dotStrokeOptions });
             return (
                 <circle
                     cx={0}
                     cy={0}
-                    r={1.5}
+                    r={radius}
                     key={`${stationId}-dot`}
                     transform={`translate(${pos.x}, ${pos.y})`}
                     {...strokeProps}
-                    fill='white'
+                    fill={fill}
                 />
             );
         });
@@ -212,6 +241,44 @@ export const LineMap = (props: LineMapProps) => {
         });
     };
 
+    const renderStationHitTargets = () => {
+        if (!stationTooltip && !onStationClick) {
+            return null;
+        }
+        const clearHoveredStation = (stationId: string) =>
+            setHoveredStationId((current) => (current === stationId ? null : current));
+        return Object.entries(stationPositions).map(([stationId, pos]) => {
+            const stationName = stationsById[stationId].stop_name;
+            const clickProps = onStationClick && {
+                role: 'button',
+                tabIndex: 0,
+                onClick: () => onStationClick(stationId),
+                onKeyDown: (evt: React.KeyboardEvent) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        evt.preventDefault();
+                        onStationClick(stationId);
+                    }
+                },
+            };
+            return (
+                <circle
+                    key={`station-hit-target-${stationId}`}
+                    className={onStationClick ? styles.clickableStationHitTarget : styles.stationHitTarget}
+                    cx={0}
+                    cy={0}
+                    r={STATION_HIT_TARGET_RADIUS}
+                    transform={`translate(${pos.x}, ${pos.y})`}
+                    aria-label={stationName}
+                    onMouseEnter={() => setHoveredStationId(stationId)}
+                    onMouseLeave={() => clearHoveredStation(stationId)}
+                    onFocus={() => setHoveredStationId(stationId)}
+                    onBlur={() => clearHoveredStation(stationId)}
+                    {...clickProps}
+                />
+            );
+        });
+    };
+
     const renderLine = () => {
         return <path d={pathDirective} {...getPropsForStrokeOptions(strokeOptions)} />;
     };
@@ -234,34 +301,63 @@ export const LineMap = (props: LineMapProps) => {
 
     const renderComputedLabels = () => {
         const transform = isHorizontal ? 'rotate(90)' : undefined;
-        return <g transform={transform}>{computedSegmentExtras.map((segment) => segment.computedLabels).flat()}</g>;
+        return (
+            <g transform={transform}>
+                {computedSegmentExtras.map((segment) => segment.computedLabels).flat()}
+                {computedStationExtras.computedLabels}
+            </g>
+        );
+    };
+
+    const renderTooltipContainer = (
+        viewportCoordinates: Point,
+        side: TooltipSide,
+        contents: React.ReactNode,
+        className = styles.tooltipContainer,
+    ) => {
+        const { x, y } = viewportCoordsToContainer(viewportCoordinates);
+        return (
+            <div
+                className={className}
+                style={{
+                    left: x,
+                    top: y,
+                    transform:
+                        side === 'top'
+                            ? `translate(-50%, -100%)`
+                            : side === 'left'
+                              ? `translate(-100%, -50%)`
+                              : `translateY(-50%)`,
+                }}
+            >
+                {contents}
+            </div>
+        );
+    };
+
+    const renderStationTooltip = () => {
+        const station = hoveredStationId && stationsById[hoveredStationId];
+        if (stationTooltip && station) {
+            const viewportCoordinates = diagramCoordsToViewport(stationPositions[station.station]);
+            const side = getTooltipSide(viewportCoordinates.x);
+            const contents = stationTooltip.render({
+                stationId: station.station,
+                stationName: station.stop_name,
+                side,
+            });
+            if (contents) {
+                return renderTooltipContainer(viewportCoordinates, side, contents, styles.stationTooltipContainer);
+            }
+        }
+        return null;
     };
 
     const renderTooltip = () => {
-        const tooltipX = tooltipViewportCoordinates?.x;
-        const tooltipOnRightSide = tooltipX && tooltipX / window.innerWidth <= 0.5;
-        const tooltipSide = isHorizontal ? 'top' : tooltipOnRightSide ? 'right' : 'left';
+        const tooltipSide = getTooltipSide(tooltipViewportCoordinates?.x);
         const tooltipContents =
             tooltipSegmentLocation && tooltip?.render({ segmentLocation: tooltipSegmentLocation, side: tooltipSide });
         if (tooltipViewportCoordinates && tooltipContents) {
-            const { x, y } = viewportCoordsToContainer(tooltipViewportCoordinates);
-            return (
-                <div
-                    className={styles.tooltipContainer}
-                    style={{
-                        left: x,
-                        top: y,
-                        transform:
-                            tooltipSide === 'top'
-                                ? `translate(-50%, -100%)`
-                                : tooltipSide === 'left'
-                                  ? `translate(-100%, -50%)`
-                                  : `translateY(-50%)`,
-                    }}
-                >
-                    {tooltipContents}
-                </div>
-            );
+            return renderTooltipContainer(tooltipViewportCoordinates, tooltipSide, tooltipContents);
         }
     };
 
@@ -286,11 +382,12 @@ export const LineMap = (props: LineMapProps) => {
                         {renderComputedLabels()}
                         {renderStationDots()}
                         {renderStationLabels()}
+                        {renderStationHitTargets()}
                     </g>
                 </svg>
             </div>
             {renderWatermark()}
-            {renderTooltip()}
+            {renderStationTooltip() ?? renderTooltip()}
         </div>
     );
 };

@@ -27,6 +27,30 @@ import { StraightLineMap } from '@transitmatters/stripmap';
 
 It accepts the same props as `LineMap` (`direction`, `tooltip`, `getSegments`, etc.) apart from `diagram`. If you need the `Diagram` itself, call `createStraightLineDiagram(stations, { pxPerStation })` and pass it to `LineMap`.
 
+## Stations
+
+`LineMap` can also show information at each station, such as ridership or accessibility:
+
+```tsx
+<LineMap
+    diagram={diagram}
+    // Style each station's dot and draw content beside it, like segment labels
+    getStations={({ isHorizontal }) => [
+        {
+            stationId: 'place-pktrm',
+            dot: { radius: 3, fill: 'green' },
+            labels: [{ mapSide: '0', content: ({ width, height }) => <text>3.8k</text> }],
+        },
+    ]}
+    // Shown while a station is hovered or focused, in place of the segment tooltip
+    stationTooltip={{ render: ({ stationId, stationName, side }) => <div>{stationName}</div> }}
+    // Makes stations focusable buttons
+    onStationClick={(stationId) => setSelectedStationId(stationId)}
+/>
+```
+
+Station labels take the same `mapSide`, `boundingSize` and `offset` options as segment labels, plus `length`, which sets how far the label extends along the line (default 10).
+
 ## Development
 
 ```
