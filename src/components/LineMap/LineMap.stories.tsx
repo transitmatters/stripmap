@@ -162,7 +162,7 @@ const GreenLineWithAllSegments = ({ direction }: { direction: 'horizontal' | 've
                 boundingSize: direction === 'horizontal' ? 15 : 20,
                 // Same shape as the dashboard's speed labels: one line per direction, centered
                 content: ({ width, height }) => (
-                    <g fontSize={4} textAnchor='middle' fill='#333'>
+                    <g fontSize={4} textAnchor='middle' fill='currentColor'>
                         <text x={width / 2} y={height / 2 - 1.5}>
                             ❮ 12 mph
                         </text>
@@ -243,7 +243,7 @@ const GreenLineWithStationInteraction = ({ direction }: { direction: 'horizontal
                                 y={isHorizontal ? 4 : height / 2 + 1.25}
                                 fontSize={3.5}
                                 textAnchor={isHorizontal ? 'middle' : 'start'}
-                                fill='#333'
+                                fill='currentColor'
                                 fontWeight={isSelected ? 'bold' : undefined}
                             >
                                 {(ridership / 1000).toFixed(1)}k
@@ -271,6 +271,7 @@ const GreenLineWithStationInteraction = ({ direction }: { direction: 'horizontal
                             // Leave the station itself visible
                             margin: side === 'top' ? '0 0 12px' : side === 'left' ? '0 12px 0 0' : '0 0 0 12px',
                             background: 'white',
+                            color: '#333',
                             border: '1px solid #ccc',
                             borderRadius: 4,
                             padding: '4px 8px',
@@ -291,6 +292,13 @@ const GreenLineWithStationInteraction = ({ direction }: { direction: 'horizontal
 export const StationInteractionHorizontal = () => <GreenLineWithStationInteraction direction='horizontal' />;
 
 export const StationInteractionVertical = () => <GreenLineWithStationInteraction direction='vertical' />;
+
+// Station names and the keyboard focus ring follow the surrounding text color
+export const DarkBackground = () => (
+    <div style={{ background: '#1c1917', color: '#e7e5e4', padding: '48px 16px 16px' }}>
+        <GreenLineWithStationInteraction direction='horizontal' />
+    </div>
+);
 
 export const Main: StoryObj = { args: { line: 'Red', direction: 'horizontal' } };
 
