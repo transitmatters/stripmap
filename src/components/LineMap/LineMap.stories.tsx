@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import type { SegmentRenderOptions } from './LineMap';
+import type { SegmentRenderOptions, StationRenderOptions } from './LineMap';
 import { LineMap } from './LineMap';
 import { createDefaultDiagramForLine } from '../..';
+import { stations as stationData } from '../../mbta/stations';
 
 const meta: Meta = {
     title: 'LineMap',
@@ -203,6 +204,93 @@ export const Watermarked = () => {
         />
     );
 };
+
+const greenLineStationDetails: Record<string, { accessible: boolean }> = Object.fromEntries(
+    stationData.Green.stations.map((station) => [station.station, station]),
+);
+
+// Mirrors the dashboard's station ridership map: dot size and a label show ridership at each stop,
+// hovering shows details, and clicking selects a stop
+const GreenLineWithStationInteraction = ({ direction }: { direction: 'horizontal' | 'vertical' }) => {
+    const [selectedStationId, setSelectedStationId] = useState<null | string>(null);
+    const diagram = createDefaultDiagramForLine('Green', { pxPerStation: 15, direction });
+    // Made-up ridership numbers, stable from render to render
+    const ridershipByStationId: Record<string, number> = Object.fromEntries(
+        diagram.getStations().map((station, index) => [station.station, 500 + ((index * 7919) % 9500)]),
+    );
+    const maxRidership = Math.max(...Object.values(ridershipByStationId));
+
+    const getStations = ({ isHorizontal }: { isHorizontal: boolean }): StationRenderOptions[] =>
+        diagram.getStations().map(({ station: stationId }) => {
+            const ridership = ridershipByStationId[stationId];
+            const isSelected = stationId === selectedStationId;
+            return {
+                stationId,
+                dot: {
+                    radius: 1 + 2 * (ridership / maxRidership),
+                    fill: isSelected ? 'green' : 'white',
+                    strokeWidth: isSelected ? 1.5 : 1,
+                },
+                labels: [
+                    {
+                        mapSide: '0',
+                        length: 15,
+                        boundingSize: isHorizontal ? 8 : 14,
+                        // Keep clear of the dot, which sits on the edge of the label nearest the line
+                        content: ({ width, height }) => (
+                            <text
+                                x={isHorizontal ? width / 2 : 4}
+                                y={isHorizontal ? 4 : height / 2 + 1.25}
+                                fontSize={3.5}
+                                textAnchor={isHorizontal ? 'middle' : 'start'}
+                                fill='#333'
+                                fontWeight={isSelected ? 'bold' : undefined}
+                            >
+                                {(ridership / 1000).toFixed(1)}k
+                            </text>
+                        ),
+                    },
+                ],
+            };
+        });
+
+    return (
+        <LineMap
+            direction={direction}
+            diagram={diagram}
+            strokeOptions={{ stroke: 'green' }}
+            getStationLabel={abbreviateStationName}
+            getStations={getStations}
+            onStationClick={(stationId) =>
+                setSelectedStationId((current) => (current === stationId ? null : stationId))
+            }
+            stationTooltip={{
+                render: ({ stationId, stationName, side }) => (
+                    <div
+                        style={{
+                            // Leave the station itself visible
+                            margin: side === 'top' ? '0 0 12px' : side === 'left' ? '0 12px 0 0' : '0 0 0 12px',
+                            background: 'white',
+                            border: '1px solid #ccc',
+                            borderRadius: 4,
+                            padding: '4px 8px',
+                            fontSize: 12,
+                            whiteSpace: 'nowrap',
+                        }}
+                    >
+                        <strong>{stationName}</strong>
+                        <div>{ridershipByStationId[stationId].toLocaleString()} riders/day</div>
+                        <div>{greenLineStationDetails[stationId]?.accessible ? '♿ Accessible' : 'Not accessible'}</div>
+                    </div>
+                ),
+            }}
+        />
+    );
+};
+
+export const StationInteractionHorizontal = () => <GreenLineWithStationInteraction direction='horizontal' />;
+
+export const StationInteractionVertical = () => <GreenLineWithStationInteraction direction='vertical' />;
 
 export const Main: StoryObj = { args: { line: 'Red', direction: 'horizontal' } };
 

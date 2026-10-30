@@ -16,11 +16,33 @@ export const tooltipContainer = style({
     },
 });
 
+// The tooltip opens over the station it describes, so it mustn't steal the hover from it
+export const stationTooltipContainer = style([tooltipContainer, { pointerEvents: 'none' }]);
+
 export const watermarkContainer = style({
     position: 'absolute',
     pointerEvents: 'none',
     userSelect: 'none',
 });
+
+export const stationHitTarget = style({
+    fill: 'transparent',
+    stroke: 'none',
+    outline: 'none',
+});
+
+export const clickableStationHitTarget = style([
+    stationHitTarget,
+    {
+        cursor: 'pointer',
+        selectors: {
+            '&:focus-visible': {
+                stroke: '#333',
+                strokeWidth: 0.75,
+            },
+        },
+    },
+]);
 
 export const inner = style({
     overflowX: 'scroll',
