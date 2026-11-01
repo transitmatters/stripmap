@@ -226,7 +226,7 @@ export const LineMap = (props: LineMapProps) => {
                     <text
                         key={`station-label-${stationId}`}
                         fontSize={4}
-                        fill='#333'
+                        fill='currentColor'
                         textAnchor='end'
                         x={-4}
                         y={1.5}

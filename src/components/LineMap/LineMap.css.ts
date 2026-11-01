@@ -37,7 +37,7 @@ export const clickableStationHitTarget = style([
         cursor: 'pointer',
         selectors: {
             '&:focus-visible': {
-                stroke: '#333',
+                stroke: 'currentColor',
                 strokeWidth: 0.75,
             },
         },
