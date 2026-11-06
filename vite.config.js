@@ -12,7 +12,9 @@ export default defineConfig({
             entry: resolve(__dirname, 'src', 'index.ts'),
             name: 'stripmap',
             filename: 'stripmap',
+            // Vite 6 names the CSS after the package; consumers import dist/style.css.
+            cssFileName: 'style',
         },
     },
-    plugins: [react(), vanillaExtractPlugin(), dts({ rollupTypes: true }), externalizeDeps()],
+    plugins: [react(), vanillaExtractPlugin(), dts({ bundleTypes: true }), externalizeDeps()],
 });
