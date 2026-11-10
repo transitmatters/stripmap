@@ -1,4 +1,4 @@
-import { getSegmentLabelBounds, getStationLabelBounds } from './labels';
+import { getSegmentLabelBounds, getStationLabelBounds, getStationNameOffset } from './labels';
 
 const content = () => null;
 
@@ -76,5 +76,15 @@ describe('getStationLabelBounds', () => {
             width: 10,
             height: 10,
         });
+    });
+});
+
+describe('getStationNameOffset', () => {
+    test('keeps the usual offset for default-sized dots', () => {
+        expect(getStationNameOffset(1.5)).toBe(4);
+    });
+
+    test('moves the name past larger dots', () => {
+        expect(getStationNameOffset(3.5)).toBe(6);
     });
 });
