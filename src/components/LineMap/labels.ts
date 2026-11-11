@@ -56,3 +56,10 @@ export const getStationLabelBounds = (stationPosition: Point, stationLabel: Stat
     const bounds = { top: y - length / 2, left: x, right: x, width: 0, height: length };
     return getSegmentLabelBounds(bounds, stationLabel, isHorizontal);
 };
+
+const MIN_STATION_NAME_OFFSET = 4;
+const STATION_NAME_DOT_GAP = 2.5;
+
+// How far a station's name starts from its center, so it clears even a large dot
+export const getStationNameOffset = (dotRadius: number) =>
+    Math.max(MIN_STATION_NAME_OFFSET, dotRadius + STATION_NAME_DOT_GAP);

@@ -224,10 +224,13 @@ const GreenLineWithStationInteraction = ({ direction }: { direction: 'horizontal
         diagram.getStations().map(({ station: stationId }) => {
             const ridership = ridershipByStationId[stationId];
             const isSelected = stationId === selectedStationId;
+            const radius = 1 + 2.5 * Math.sqrt(ridership / maxRidership);
+            // The dot sits on the label's edge nearest the line: its left in a vertical map, its bottom in a horizontal one
+            const distanceFromStation = radius + 1.5;
             return {
                 stationId,
                 dot: {
-                    radius: 1 + 2 * (ridership / maxRidership),
+                    radius,
                     fill: isSelected ? 'green' : 'white',
                     strokeWidth: isSelected ? 1.5 : 1,
                 },
@@ -235,12 +238,12 @@ const GreenLineWithStationInteraction = ({ direction }: { direction: 'horizontal
                     {
                         mapSide: '0',
                         length: 15,
-                        boundingSize: isHorizontal ? 8 : 14,
-                        // Keep clear of the dot, which sits on the edge of the label nearest the line
+                        boundingSize: isHorizontal ? 8 : 16,
                         content: ({ width, height }) => (
                             <text
-                                x={isHorizontal ? width / 2 : 4}
-                                y={isHorizontal ? 4 : height / 2 + 1.25}
+                                x={isHorizontal ? width / 2 : distanceFromStation}
+                                y={isHorizontal ? height - distanceFromStation : height / 2}
+                                dominantBaseline={isHorizontal ? undefined : 'central'}
                                 fontSize={3.5}
                                 textAnchor={isHorizontal ? 'middle' : 'start'}
                                 fill='currentColor'

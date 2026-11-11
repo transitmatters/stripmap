@@ -4,7 +4,7 @@ import type { Diagram, SegmentLocation, Station, Point } from '../../diagrams';
 import { useDiagramCoordinates, useLineTooltip } from '../../hooks';
 
 import * as styles from './LineMap.css';
-import { getSegmentLabelBounds, getStationLabelBounds } from './labels';
+import { getSegmentLabelBounds, getStationLabelBounds, getStationNameOffset } from './labels';
 import type { SegmentLabel, StationLabel } from './labels';
 import { getWatermarkStyle } from './watermark';
 import type { WatermarkOptions } from './watermark';
@@ -222,13 +222,15 @@ export const LineMap = (props: LineMapProps) => {
             const stationName = stationsById[stationId].stop_name;
             const stationLabel = getStationLabel?.({ stationId, stationName }) ?? stationName;
             if (stationLabel) {
+                const dotRadius =
+                    computedStationExtras.dotsByStationId[stationId]?.radius ?? DEFAULT_STATION_DOT_RADIUS;
                 return (
                     <text
                         key={`station-label-${stationId}`}
                         fontSize={4}
                         fill='currentColor'
                         textAnchor='end'
-                        x={-4}
+                        x={-getStationNameOffset(dotRadius)}
                         y={1.5}
                         aria-hidden='true'
                         transform={`translate(${pos.x} ${pos.y}) rotate(${isHorizontal ? 45 : 0})`}
