@@ -5,7 +5,7 @@ import { Point } from '../diagrams';
 
 import type { LineMapProps as LineMapProps } from '../components/LineMap/LineMap';
 
-type Options = Pick<LineMapProps, 'getScaleBasis' | 'direction'>;
+type Options = Pick<LineMapProps, 'getScaleBasis' | 'minHorizontalScale' | 'direction'>;
 
 type SvgProps = {
     width: number;
@@ -15,7 +15,7 @@ type SvgProps = {
 
 export type CoordinateTransform = (p: Point) => Point;
 
-const MIN_HORIZONTAL_SCALE = 1.8;
+const DEFAULT_MIN_HORIZONTAL_SCALE = 1.8;
 const MAX_HORIZONTAL_SCALE = 4;
 
 const defaultGetScaleBasis = (viewport: { width: null | number; height: null | number }) => {
@@ -31,7 +31,11 @@ const defaultGetScaleBasis = (viewport: { width: null | number; height: null | n
 };
 
 export const useDiagramCoordinates = (options: Options) => {
-    const { direction, getScaleBasis = defaultGetScaleBasis } = options;
+    const {
+        direction,
+        getScaleBasis = defaultGetScaleBasis,
+        minHorizontalScale = DEFAULT_MIN_HORIZONTAL_SCALE,
+    } = options;
     const [svg, setSvg] = useState<null | SVGSVGElement>(null);
     const [container, setContainer] = useState<null | HTMLElement>(null);
     const [svgProps, setSvgProps] = useState<null | SvgProps>(null);
@@ -54,7 +58,7 @@ export const useDiagramCoordinates = (options: Options) => {
                 const containerWidth = container.getBoundingClientRect().width;
                 const mapWidth = Math.min(
                     MAX_HORIZONTAL_SCALE * width,
-                    Math.max(MIN_HORIZONTAL_SCALE * width, containerWidth),
+                    Math.max(minHorizontalScale * width, containerWidth),
                 );
                 const aspectRatio = width / height;
                 setSvgProps({
@@ -71,7 +75,7 @@ export const useDiagramCoordinates = (options: Options) => {
                 });
             }
         }
-    }, [svg, container, viewportWidth, viewportHeight, getScaleBasis, isHorizontal]);
+    }, [svg, container, viewportWidth, viewportHeight, getScaleBasis, minHorizontalScale, isHorizontal]);
 
     const viewportCoordsToDiagram: CoordinateTransform = useCallback(
         (viewportPoint: Point) => {

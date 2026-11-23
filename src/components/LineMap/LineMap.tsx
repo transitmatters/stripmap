@@ -57,6 +57,11 @@ export interface LineMapProps {
     tooltip?: TooltipOptions;
     getStationLabel?: (options: { stationId: string; stationName: string }) => string;
     getScaleBasis?: (viewport: { width: null | number; height: null | number }) => number;
+    /**
+     * The smallest scale a horizontal map shrinks to before it scrolls instead. Raise it for long lines,
+     * whose station names would otherwise render too small to read
+     */
+    minHorizontalScale?: number;
     getSegments?: (options: { isHorizontal: boolean }) => SegmentRenderOptions[];
     /** Per-station dot styles and labels, e.g. to show ridership at each stop */
     getStations?: (options: { isHorizontal: boolean }) => StationRenderOptions[];
@@ -86,6 +91,7 @@ export const LineMap = (props: LineMapProps) => {
         direction = 'horizontal' as const,
         getStationLabel,
         getScaleBasis,
+        minHorizontalScale,
         strokeOptions = {},
         tooltip,
         getSegments,
@@ -105,6 +111,7 @@ export const LineMap = (props: LineMapProps) => {
         diagramCoordsToViewport,
     } = useDiagramCoordinates({
         getScaleBasis,
+        minHorizontalScale,
         direction,
     });
 
